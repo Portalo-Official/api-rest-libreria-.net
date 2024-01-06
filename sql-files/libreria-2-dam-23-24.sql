@@ -25,36 +25,36 @@ CREATE TABLE Temas(
 -- GET
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE getTemas()
-BEGIN
-	Select Tema FROM Temas;
-END$$
+	BEGIN
+		Select Tema FROM Temas;
+	END$$
 DELIMITER ;
 
 -- PUT
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE putTema( IN temaNuevo Varchar(50))
-BEGIN
-	INSERT into Temas(Tema) Values(temaNuevo);
-END$$
+	BEGIN
+		INSERT into Temas(Tema) Values(temaNuevo);
+	END$$
 DELIMITER ;
 
 -- DELETE
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE deleteTema(IN temaBorrar int(9))
-BEGIN
-	DELETE from Temas WHERE id=temaBorrar;
-END$$
+	BEGIN
+		DELETE from Temas WHERE id=temaBorrar;
+	END$$
 DELIMITER ;
 
 -- POST
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE updateTema(IN id_temaViejo int(9),
 										IN temaNuevo varchar(9))
-BEGIN 
-	UPDATE Temas
-	SET tema = temaNuevo
-	WHERE id=id_temaViejo;
-END$$
+	BEGIN 
+		UPDATE Temas
+		SET tema = temaNuevo
+		WHERE id=id_temaViejo;
+	END$$
 DELIMITER ;
 
 -- ##################################################################################
@@ -65,15 +65,15 @@ DROP TABLE IF EXISTS Autores;
 CREATE TABLE Autores(
 	id int(9) primary key auto_increment,
 	nombre varchar(50) NOT NULL
-)
+);
 
 -- Añadir restrcicion de nombre unico (Esto se puede hacer al crear la tabla)
-ALTER TABLE Autor
+ALTER TABLE Autores
 ADD CONSTRAINT unique_nombre UNIQUE (nombre);
 
 -- GET
 DELIMITER $$
-CREATE OR REPLACE PROCEDURE getAutor()
+CREATE OR REPLACE PROCEDURE getAutores()
 	BEGIN
 		SELECT id, nombre FROM Autores;
 	END$$
@@ -83,27 +83,27 @@ DELIMITER ;
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE updateAutor(IN id_autor int(9), 
 									IN nombreActualizado varchar(50))
-BEGIN
-	UPDATE Autores
-	SET nombre = nombreActualizado
-	WHERE id = id_autor;
-END$$
+	BEGIN
+		UPDATE Autores
+		SET nombre = nombreActualizado
+		WHERE id = id_autor;
+	END$$
 DELIMITER ;
 
 -- PUT
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE putAutor( IN nombre_autor varchar(50))
-BEGIN
-	INSERT into Autores(nombnre) Values(nombre_autor);
-END$$
+	BEGIN
+		INSERT into Autores(nombre) Values(nombre_autor);
+	END$$
 DELIMITER ;
 
 -- DELETE
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE deleteAutor(IN id_autor int(9))
-BEGIN
-	DELETE from Autores where	id = id_autor;
-END$$
+	BEGIN
+		DELETE from Autores where	id = id_autor;
+	END$$
 DELIMITER ;
 
 -- ##################################################################################
@@ -114,21 +114,21 @@ DROP TABLE IF EXISTS Ediciones;
 CREATE TABLE Ediciones(
 	id int(9) primary key auto_increment,
 	tipo varchar(25) NOT NULL
-)
+);
 
 -- Procedimientos
 -- GET
 DELIMITER $$
-CREATE OR REPLACE PROCEDURE getEdicion()
-BEGIN
-	SELECT id, nombre 
-	FROM Edicion;
-END$$
+CREATE OR REPLACE PROCEDURE getEdiciones()
+	BEGIN
+		SELECT id, tipo 
+		FROM ediciones;
+	END$$
 DELIMITER ;
 
 -- POST
 DELIMITER $$
-CREATE OR REPLACE PROCEDURE updateEdicion(IN id_edicion int(9)
+CREATE OR REPLACE PROCEDURE updateEdicion(IN id_edicion int(9),
 									IN tipo_edicion varchar(25))
 	BEGIN
 		UPDATE ediciones
@@ -157,6 +157,51 @@ DELIMITER ;
 -- ############################# FORMATO ############################################
 -- ##################################################################################
 
+-- TABLA ----------------------------------
+DROP TABLE IF EXISTS Formatos;
+CREATE TABLE Formatos(
+	id int(9) primary key auto_increment,
+	tipo varchar(25) NOT NULL
+);
+
+-- RPOCEDURES -----------
+-- GET
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE getFormatos()
+	BEGIN
+		SELECT id, tipo 
+		FROM formatos;
+	END$$
+DELIMITER ;
+
+-- POST
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE updateFormato(IN id_formato int(9),
+									IN tipo_formato varchar(25))
+	BEGIN
+		UPDATE formatos
+		SET tipo = tipo_formato
+		WHERE id = id_formato;
+	END$$
+DELIMITER ;
+
+-- PUT
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE putFormato(IN tipo_formato varchar(25))
+	BEGIN
+		INSERT into formatos(tipo) VALUES(tipo_formato);
+	END$$
+DELIMITER ;
+
+-- DELETE
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE deleteFormato(IN id_formato int(9))
+	BEGIN
+		DELETE from formatos Where id = id_formato;
+	END$$
+DELIMITER ;
+
+
 -- Valores por defecto
 
 -- ----------- VALORES POR DEFECTO ------------------------------------
@@ -167,14 +212,22 @@ call putTema("Romance");
 call putTema("Aventura");
 
 -- AUTORES
-INSERT INTO Autor(nombre) VALUES('Caballero Chavero')
-		, ('Rebecca Yarros'),('J. K. Rowling'), ('Cassandra Clare');
+call putAutor('Beltran Labios Bonitos');
+INSERT INTO Autores(nombre) VALUES('Caballero Chavero')
+				, ('Rebecca Yarros'),('J. K. Rowling'),
+				 ('Cassandra Clare');
+
 
 -- FORMATO
-
+call putFormato('Tapa Blanda');
+call putFormato('Tapa Dura');
+call putFormato('Digital');
+call putFormato('De bolsillo');
 
 -- EDICION
-
+call putEdicion('Especial');
+call putEdicion('Aniversario');
+call putEdicion('Pirata');
 
 
 
