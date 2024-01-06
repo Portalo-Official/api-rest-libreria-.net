@@ -1,20 +1,23 @@
--- ###############################################################
--- #
--- # BBDD created by Santiago Miguez Cea
--- # Repository GitHub: 
--- #
--- ###############################################################
+-- ##################################################################################
+-- #																				#
+-- # BBDD created by Santiago Miguez Cea 											#
+-- # Repository GitHub: https://github.com/santiagoieshna/api-rest-libreria-.net 	#
+-- #																				#
+-- ##################################################################################
+
+-- Data Base
 DROP DATABASE IF EXISTS LibreriaNET;
 CREATE DATABASE LibreriaNET;
 use LibreriaNET;
 
--- TEMAS
+-- ##################################################################################
+-- ##############################  TEMAS  ###########################################
+-- ##################################################################################
 -- Crear Tabla Temas
 CREATE TABLE Temas(
  Id int(9) primary key auto_increment,
  Tema varchar(50) NOT NULL UNIQUE 
 );
-
 
 
 -- Crear Procedimientos de almacenamiento
@@ -54,21 +57,25 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- ##################################################################################
+-- ############################ AUTOR ###############################################
+-- ##################################################################################
+DROP TABLE IF EXISTS Autores;
 
--- ############################ AUTOR ###################################
--- TABLA Autores
-DROP TABLE IF EXISTS Autor;
-
-CREATE TABLE Autor(
+CREATE TABLE Autores(
 	id int(9) primary key auto_increment,
-	nombre varchar(50)
+	nombre varchar(50) NOT NULL
 )
+
+-- Añadir restrcicion de nombre unico (Esto se puede hacer al crear la tabla)
+ALTER TABLE Autor
+ADD CONSTRAINT unique_nombre UNIQUE (nombre);
 
 -- GET
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE getAutor()
 	BEGIN
-		SELECT id, nombre FROM Autor;
+		SELECT id, nombre FROM Autores;
 	END$$
 DELIMITER ;
 
@@ -77,7 +84,7 @@ DELIMITER $$
 CREATE OR REPLACE PROCEDURE updateAutor(IN id_autor int(9), 
 									IN nombreActualizado varchar(50))
 BEGIN
-	UPDATE Autor
+	UPDATE Autores
 	SET nombre = nombreActualizado
 	WHERE id = id_autor;
 END$$
@@ -87,7 +94,7 @@ DELIMITER ;
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE putAutor( IN nombre_autor varchar(50))
 BEGIN
-	INSERT into Autor(nombnre) Values(nombre_autor);
+	INSERT into Autores(nombnre) Values(nombre_autor);
 END$$
 DELIMITER ;
 
@@ -95,15 +102,60 @@ DELIMITER ;
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE deleteAutor(IN id_autor int(9))
 BEGIN
-	DELETE from Temas where	id = id_autor;
+	DELETE from Autores where	id = id_autor;
 END$$
 DELIMITER ;
 
--- ############################# EDICION #################################
-
+-- ##################################################################################
+-- ############################# EDICION ############################################
+-- ##################################################################################
 -- TABLA
-DROP IF EXISTS 
+DROP TABLE IF EXISTS Ediciones;
+CREATE TABLE Ediciones(
+	id int(9) primary key auto_increment,
+	tipo varchar(25) NOT NULL
+)
 
+-- Procedimientos
+-- GET
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE getEdicion()
+BEGIN
+	SELECT id, nombre 
+	FROM Edicion;
+END$$
+DELIMITER ;
+
+-- POST
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE updateEdicion(IN id_edicion int(9)
+									IN tipo_edicion varchar(25))
+	BEGIN
+		UPDATE ediciones
+		SET tipo = tipo_edicion
+		WHERE id = id_edicion;
+	END$$
+DELIMITER ;
+
+-- PUT
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE putEdicion(IN tipo_edicion varchar(25))
+	BEGIN
+		INSERT into ediciones(tipo) VALUES(tipo_edicion);
+	END$$
+DELIMITER ;
+
+-- DELETE
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE deleteEdicion(IN id_edicion int(9))
+	BEGIN
+		DELETE from ediciones Where id = id_edicion;
+	END$$
+DELIMITER ;
+
+-- ##################################################################################
+-- ############################# FORMATO ############################################
+-- ##################################################################################
 
 -- Valores por defecto
 
