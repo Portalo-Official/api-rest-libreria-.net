@@ -16,7 +16,9 @@ namespace pruebaSantiAPI_REST.SQL.DAO
         private MySqlConnection connection;
         private ConnectionBD()
         {
-            DotEnv.Load(); // Cargar variables de entorno desde el archivo .env
+            // Cargar variables de entorno desde el archivo .env
+            var rutaAbsoluta = "D:\\DAM\\DAM_Segundo\\Desarrollo_De_Interfaces\\Proyectos_discoDuro\\api-rest-libreria-.net\\api-libreria-dotnet\\.env";
+            DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] { rutaAbsoluta }));
 
 
             string connectionString = GetConnectionURL();
@@ -37,7 +39,7 @@ namespace pruebaSantiAPI_REST.SQL.DAO
             string user = Environment.GetEnvironmentVariable("DB_USER");
             string password = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
-            return $"Server={server};Database={database};User ID={user};Password={password};";
+            return $"Server={server};Database={database};Uid={user};Pwd={password};";
         }
 
         public MySqlConnection GetConnection()
@@ -47,6 +49,11 @@ namespace pruebaSantiAPI_REST.SQL.DAO
                 this.connection.Open();
             }
             return this.connection;
+        }
+
+        public void CloseConnection()
+        {
+            this.connection?.Close();
         }
 
        

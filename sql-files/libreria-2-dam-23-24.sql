@@ -26,7 +26,7 @@ CREATE TABLE Temas(
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE getTemas()
 	BEGIN
-		Select Tema FROM Temas;
+		Select Id, Tema FROM Temas;
 	END$$
 DELIMITER ;
 
@@ -197,7 +197,7 @@ DELIMITER ;
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE deleteFormato(IN id_formato int(9))
 	BEGIN
-		DELETE from formatos Where id = id_formato;
+		DELETE from formatos Where id= id_formato;
 	END$$
 DELIMITER ;
 
@@ -230,10 +230,14 @@ call putEdicion('Aniversario');
 call putEdicion('Pirata');
 
 
--- ###### CREAR USUARIO ###########
+-- ########################### CREAR USUARIO ####################
 -- CREATE USER 'portalo'@'%' -> PAra conectarse desde cualqueir host
 CREATE USER 'portalo'@'localhost' IDENTIFIED BY '12345';
 GRANT ALL PRIVILEGES ON LibreriaNET.* TO 'portalo'@'localhost';
 -- Refrescar privilegios
 FLUSH PRIVILEGES; 
 
+-- Dara error el conectarnos por el tema host
+GRANT ALL PRIVILEGES ON *.* TO 'portalo'@'192.168.1.%' 
+IDENTIFIED BY '12345' WITH GRANT OPTION;
+FLUSH PRIVILEGES;

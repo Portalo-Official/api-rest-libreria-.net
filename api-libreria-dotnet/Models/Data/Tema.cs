@@ -8,6 +8,6 @@ namespace pruebaSantiAPI_REST.Models
     public class Tema
     {
         public int Id { get; set; }
-        public string Temas { get; set; }
+        public string Tipo { get; set; }
     }
 }

@@ -196,6 +196,8 @@
     <Compile Include="SQL\DTO\DTO_Libro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQL\DTO\DTO_Tema.cs" />
+    <Compile Include="SQL\Mapper\IMapper.cs" />
+    <Compile Include="SQL\Mapper\TemaMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
