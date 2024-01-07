@@ -230,5 +230,10 @@ call putEdicion('Aniversario');
 call putEdicion('Pirata');
 
 
-
+-- ###### CREAR USUARIO ###########
+-- CREATE USER 'portalo'@'%' -> PAra conectarse desde cualqueir host
+CREATE USER 'portalo'@'localhost' IDENTIFIED BY '12345';
+GRANT ALL PRIVILEGES ON LibreriaNET.* TO 'portalo'@'localhost';
+-- Refrescar privilegios
+FLUSH PRIVILEGES; 
 
