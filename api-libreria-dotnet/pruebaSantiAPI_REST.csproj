@@ -192,9 +192,10 @@
     <Compile Include="Models\Data\Tema.cs" />
     <Compile Include="Services\ServiceTema.cs" />
     <Compile Include="SQL\ConnectionBD.cs" />
+    <Compile Include="SQL\DAO\TemaDAO.cs" />
     <Compile Include="SQL\DTO\DTO_Libro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SQL\DTO\DTO_Temas.cs" />
+    <Compile Include="SQL\DTO\DTO_Tema.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -208,7 +209,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="SQL\DAO\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".env" />

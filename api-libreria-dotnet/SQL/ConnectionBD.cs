@@ -10,7 +10,7 @@ namespace pruebaSantiAPI_REST.SQL.DAO
 {
     public class ConnectionBD
     {
-
+        // no se crea ninguna instancia mientras no se tenga acceso por primera vez con Lazy<T>
         private static readonly Lazy<ConnectionBD> lazyInstance = new Lazy<ConnectionBD>(() => new ConnectionBD());
         public static ConnectionBD Instance => lazyInstance.Value;
         private MySqlConnection connection;
@@ -46,7 +46,6 @@ namespace pruebaSantiAPI_REST.SQL.DAO
             {
                 this.connection.Open();
             }
-
             return this.connection;
         }
 

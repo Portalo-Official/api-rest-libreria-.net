@@ -1,0 +1,75 @@
+﻿using MySql.Data.MySqlClient;
+using pruebaSantiAPI_REST.SQL.DTO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace pruebaSantiAPI_REST.SQL.DAO
+{
+    // Info: https://rjcodeadvance.com/patrones-de-software-que-es-patron-de-diseno-parte-2/
+    public class TemaDAO
+    {
+        private readonly MySqlConnection connection;
+
+        public TemaDAO(MySqlConnection connection)
+        {
+            this.connection = connection;
+        }
+
+        public List<DTO_Tema> ObtenerTodosLosTemas()
+        {
+            List<DTO_Tema> temas = new List<DTO_Tema>();
+
+            using (MySqlCommand command = new MySqlCommand("getTemas", connection))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        temas.Add(DTO_Tema.FromDataReader(reader));
+                    }
+                }
+            }
+
+            return temas;
+        }
+
+        public void AgregarTema(string nuevoTema, int idTema)
+        {
+            using (MySqlCommand command = new MySqlCommand("putTema", connection))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@nuevoTema", nuevoTema);
+                command.Parameters.AddWithValue("@idtema", idTema);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void ActualizarTema(int id, string temaActualizado)
+        {
+            using (MySqlCommand command = new MySqlCommand("updateTemas", connection))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@temaActualizado", temaActualizado);
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public bool EliminarTema(int id)
+        {
+            using (MySqlCommand command = new MySqlCommand("deleteTema", connection))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@id_Tema", id);
+
+                int rowAffected = command.ExecuteNonQuery();
+                return rowAffected > 0; // Retorna -1 para cualquier otro valor no Query ok
+            }
+        }
+    }
+}
