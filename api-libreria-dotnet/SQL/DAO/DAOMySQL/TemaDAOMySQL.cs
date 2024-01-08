@@ -9,11 +9,11 @@ namespace pruebaSantiAPI_REST.SQL.DAO
 {
     // Info: https://rjcodeadvance.com/patrones-de-software-que-es-patron-de-diseno-parte-2/
     // AutoMapper: https://bravedeveloper.com/2021/12/24/aplicando-el-patron-dto-y-mapeando-objetos-con-automapper-en-un-web-api-con-net-core/
-    public class TemaDAO
+    public class TemaDAOMySQL:ITemaDAO
     {
         private readonly MySqlConnection connection;
 
-        public TemaDAO(MySqlConnection connection)
+        public TemaDAOMySQL(MySqlConnection connection)
         {
             this.connection = connection;
         }
@@ -27,13 +27,13 @@ namespace pruebaSantiAPI_REST.SQL.DAO
             command.CommandType = System.Data.CommandType.StoredProcedure;
             // Ejecutamos Procedure
             MySqlDataReader reader = command.ExecuteReader();
-                
+
             while (reader.Read())
             {
                 temas.Add(DTO_Tema.FromDataReader(reader));
             }
-                
-            
+
+
 
             return temas;
         }
@@ -71,6 +71,31 @@ namespace pruebaSantiAPI_REST.SQL.DAO
                 int rowAffected = command.ExecuteNonQuery();
                 return rowAffected > 0; // Retorna -1 para cualquier otro valor no Query ok
             }
+        }
+
+        public void create(DTO_Tema entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DTO_Tema read(int id_entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void update(DTO_Tema entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void delete(int id_entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<DTO_Tema> findAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }

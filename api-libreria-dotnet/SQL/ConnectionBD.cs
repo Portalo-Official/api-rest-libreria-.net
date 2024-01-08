@@ -17,6 +17,7 @@ namespace pruebaSantiAPI_REST.SQL.DAO
         private ConnectionBD()
         {
             // Cargar variables de entorno desde el archivo .env
+            // Poner ruta absoluta de tu archivo .env ( Temporal hasta arreglar)
             var rutaAbsoluta = "D:\\DAM\\DAM_Segundo\\Desarrollo_De_Interfaces\\Proyectos_discoDuro\\api-rest-libreria-.net\\api-libreria-dotnet\\.env";
             DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] { rutaAbsoluta }));
 

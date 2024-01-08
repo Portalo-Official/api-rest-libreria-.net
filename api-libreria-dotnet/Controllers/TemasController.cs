@@ -18,12 +18,12 @@ namespace pruebaSantiAPI_REST.Controllers
     public class TemaController : ApiController
     {
         private ConnectionBD Connection;
-        private TemaDAO temaDAO;
+        private ITemaDAO temaDAO;
 
         public TemaController()
         {
             this.Connection = ConnectionBD.Instance;
-            this.temaDAO = new TemaDAO(this.Connection.GetConnection());
+            this.temaDAO = new ITemaDAO(this.Connection.GetConnection());
         }
 
         // [HttpGet]

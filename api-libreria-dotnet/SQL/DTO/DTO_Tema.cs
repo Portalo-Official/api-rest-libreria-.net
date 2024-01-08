@@ -29,6 +29,5 @@ namespace pruebaSantiAPI_REST.SQL.DTO
             //};
         }
 
-
     }
 }
