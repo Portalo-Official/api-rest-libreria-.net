@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using pruebaSantiAPI_REST.Models;
 using pruebaSantiAPI_REST.SQL.DTO;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,58 @@ namespace pruebaSantiAPI_REST.SQL.DAO
             this.connection = connection;
         }
 
-        public List<DTO_Tema> ObtenerTodosLosTemas()
+        public Response create(DTO_Tema entity)
+        {
+            using (MySqlCommand command = new MySqlCommand("putTema", connection))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@nuevoTema", entity.Tipo);
+                command.ExecuteNonQuery();
+            }
+            return null;
+        }
+
+        public DTO_Tema read(int id_entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response update(DTO_Tema entity)
+        {
+            Response response = new Response();
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand("updateTema", connection))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@id_temaViejo", entity.Id);
+                    command.Parameters.AddWithValue("@temaNuevo", entity.Tipo);
+
+                    command.ExecuteNonQuery();
+                }
+                response.OK = "Tema Actualizado "+entity.Tipo+" nene";
+            }catch(Exception ex)
+            {
+                
+                response.Error = ex.Message;
+            }
+
+            return response;
+        }
+
+        public Response delete(int id_entity)
+        {
+            using (MySqlCommand command = new MySqlCommand("deleteTema", connection))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@id_Tema", id_entity);
+
+                command.ExecuteNonQuery();
+            }
+            return null;
+        }
+
+        public List<DTO_Tema> findAll()
         {
             List<DTO_Tema> temas = new List<DTO_Tema>();
 
@@ -32,70 +84,8 @@ namespace pruebaSantiAPI_REST.SQL.DAO
             {
                 temas.Add(DTO_Tema.FromDataReader(reader));
             }
-
-
-
+            reader.Close();
             return temas;
-        }
-
-        public void AgregarTema(string nuevoTema, int idTema)
-        {
-            using (MySqlCommand command = new MySqlCommand("putTema", connection))
-            {
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@nuevoTema", nuevoTema);
-                command.Parameters.AddWithValue("@idtema", idTema);
-                command.ExecuteNonQuery();
-            }
-        }
-
-        public void ActualizarTema(int id, string temaActualizado)
-        {
-            using (MySqlCommand command = new MySqlCommand("updateTemas", connection))
-            {
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@id", id);
-                command.Parameters.AddWithValue("@temaActualizado", temaActualizado);
-
-                command.ExecuteNonQuery();
-            }
-        }
-
-        public bool EliminarTema(int id)
-        {
-            using (MySqlCommand command = new MySqlCommand("deleteTema", connection))
-            {
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@id_Tema", id);
-
-                int rowAffected = command.ExecuteNonQuery();
-                return rowAffected > 0; // Retorna -1 para cualquier otro valor no Query ok
-            }
-        }
-
-        public void create(DTO_Tema entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DTO_Tema read(int id_entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void update(DTO_Tema entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void delete(int id_entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<DTO_Tema> findAll()
-        {
-            throw new NotImplementedException();
         }
     }
 }

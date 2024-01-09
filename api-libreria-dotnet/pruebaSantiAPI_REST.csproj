@@ -190,12 +190,24 @@
     <Compile Include="Models\Data\Formato.cs" />
     <Compile Include="Models\Data\Libro.cs" />
     <Compile Include="Models\Data\Tema.cs" />
+    <Compile Include="Models\entity\AutorDTO.cs" />
+    <Compile Include="Models\entity\EdicionDTO.cs" />
+    <Compile Include="Models\entity\FormatoDTO.cs" />
+    <Compile Include="Models\Request.cs" />
+    <Compile Include="Models\Response.cs" />
     <Compile Include="Services\ServiceTema.cs" />
     <Compile Include="SQL\ConnectionBD.cs" />
-    <Compile Include="SQL\DAO\TemaDAO.cs" />
-    <Compile Include="SQL\DTO\DTO_Libro.cs" />
+    <Compile Include="SQL\DAO\DAOMySQL\AutorDAOMySQL.cs" />
+    <Compile Include="SQL\DAO\DAOMySQL\EdicionDAOMySQL.cs" />
+    <Compile Include="SQL\DAO\DAOMySQL\TemaDAOMySQL.cs" />
+    <Compile Include="SQL\DAO\interfaceDAO\IAutorDAO.cs" />
+    <Compile Include="SQL\DAO\interfaceDAO\IEdicionDAO.cs" />
+    <Compile Include="SQL\DAO\interfaceDAO\GenericDAO.cs" />
+    <Compile Include="SQL\DAO\interfaceDAO\IFormatoDAO.cs" />
+    <Compile Include="SQL\DAO\interfaceDAO\ITemaDAO.cs" />
+    <Compile Include="Models\entity\DTO_Libro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SQL\DTO\DTO_Tema.cs" />
+    <Compile Include="Models\entity\DTO_Tema.cs" />
     <Compile Include="SQL\Mapper\IMapper.cs" />
     <Compile Include="SQL\Mapper\TemaMapper.cs" />
   </ItemGroup>

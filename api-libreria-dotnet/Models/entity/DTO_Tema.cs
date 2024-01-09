@@ -8,7 +8,7 @@ namespace pruebaSantiAPI_REST.SQL.DTO
 {
     public class DTO_Tema
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Tipo { get; set; }
 
         public static DTO_Tema FromDataReader(MySqlDataReader reader)

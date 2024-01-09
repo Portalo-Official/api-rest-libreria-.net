@@ -1,4 +1,5 @@
 ﻿using dotenv.net;
+using pruebaSantiAPI_REST.Models;
 using pruebaSantiAPI_REST.SQL.DAO;
 using pruebaSantiAPI_REST.SQL.DTO;
 using System;
@@ -23,7 +24,7 @@ namespace pruebaSantiAPI_REST.Controllers
         public TemaController()
         {
             this.Connection = ConnectionBD.Instance;
-            this.temaDAO = new ITemaDAO(this.Connection.GetConnection());
+            this.temaDAO = new TemaDAOMySQL(this.Connection.GetConnection());
         }
 
         // [HttpGet]
@@ -49,26 +50,23 @@ namespace pruebaSantiAPI_REST.Controllers
         [Route("tema-controller")]
         public List<DTO_Tema> getTemas()
         {
-            //  var root = Directory.GetCurrentDirectory();
-            //  var dotenv = Path.Combine(root, "../.env");
-            //  var rutaAbsoluta = "D:\\DAM\\DAM_Segundo\\Desarrollo_De_Interfaces\\Proyectos_discoDuro\\api-rest-libreria-.net\\api-libreria-dotnet\\.env";
-            //  DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] {rutaAbsoluta }));
-
-            // string server = Environment.GetEnvironmentVariable("DB_SERVER");
-            //  string database = Environment.GetEnvironmentVariable("DB_DATABASE");
-            // string user = Environment.GetEnvironmentVariable("DB_USER");
-            // string password = Environment.GetEnvironmentVariable("DB_PASSWORD");
-
-            // return new List<string> { rutaAbsoluta,dotenv, server, database, user,password };
-
-            return this.temaDAO.ObtenerTodosLosTemas();
+           
+            return this.temaDAO.findAll();
         }
 
         [HttpPut]
         [Route("tema-controller")]
-        public string putTemas()
+        public Response putTemas(Request request)
         {
-            return "Insertando Tema con su EndPoint";
+
+            DTO_Tema temaActualizado = new DTO_Tema()
+            {
+                Id = request.Id,
+                Tipo = request.Name
+            };
+
+           
+            return this.temaDAO.update(temaActualizado);
         }
 
         [HttpPost]

@@ -21,7 +21,6 @@ namespace pruebaSantiAPI_REST.SQL.DAO
             var rutaAbsoluta = "D:\\DAM\\DAM_Segundo\\Desarrollo_De_Interfaces\\Proyectos_discoDuro\\api-rest-libreria-.net\\api-libreria-dotnet\\.env";
             DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] { rutaAbsoluta }));
 
-
             string connectionString = GetConnectionURL();
             try
             {

@@ -5,9 +5,9 @@ using System.Web;
 
 namespace pruebaSantiAPI_REST.Models
 {
-    public class Tema
+    public class Request
     {
         public long Id { get; set; }
-        public string Tipo { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -30,9 +30,9 @@ CREATE OR REPLACE PROCEDURE getTemas()
 	END$$
 DELIMITER ;
 
--- PUT
+-- POST
 DELIMITER $$
-CREATE OR REPLACE PROCEDURE putTema( IN temaNuevo Varchar(50))
+CREATE OR REPLACE PROCEDURE  createTema( IN temaNuevo Varchar(50))
 	BEGIN
 		INSERT into Temas(Tema) Values(temaNuevo);
 	END$$
@@ -46,7 +46,7 @@ CREATE OR REPLACE PROCEDURE deleteTema(IN temaBorrar int(9))
 	END$$
 DELIMITER ;
 
--- POST
+-- PUT
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE updateTema(IN id_temaViejo int(9),
 										IN temaNuevo varchar(9))
@@ -54,6 +54,14 @@ CREATE OR REPLACE PROCEDURE updateTema(IN id_temaViejo int(9),
 		UPDATE Temas
 		SET tema = temaNuevo
 		WHERE id=id_temaViejo;
+	END$$
+DELIMITER ;
+
+-- FindByID
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE getTemaById(IN id_tema int(9))
+	BEGIN
+		Select Id, Tema FROM Temas WHERE id=id_tema;
 	END$$
 DELIMITER ;
 
@@ -79,7 +87,7 @@ CREATE OR REPLACE PROCEDURE getAutores()
 	END$$
 DELIMITER ;
 
--- POST 
+-- PUT
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE updateAutor(IN id_autor int(9), 
 									IN nombreActualizado varchar(50))
@@ -90,9 +98,9 @@ CREATE OR REPLACE PROCEDURE updateAutor(IN id_autor int(9),
 	END$$
 DELIMITER ;
 
--- PUT
+-- POST
 DELIMITER $$
-CREATE OR REPLACE PROCEDURE putAutor( IN nombre_autor varchar(50))
+CREATE OR REPLACE PROCEDURE createAutor( IN nombre_autor varchar(50))
 	BEGIN
 		INSERT into Autores(nombre) Values(nombre_autor);
 	END$$
@@ -126,7 +134,7 @@ CREATE OR REPLACE PROCEDURE getEdiciones()
 	END$$
 DELIMITER ;
 
--- POST
+-- PUT
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE updateEdicion(IN id_edicion int(9),
 									IN tipo_edicion varchar(25))
@@ -137,9 +145,9 @@ CREATE OR REPLACE PROCEDURE updateEdicion(IN id_edicion int(9),
 	END$$
 DELIMITER ;
 
--- PUT
+-- POST
 DELIMITER $$
-CREATE OR REPLACE PROCEDURE putEdicion(IN tipo_edicion varchar(25))
+CREATE OR REPLACE PROCEDURE createEdicion(IN tipo_edicion varchar(25))
 	BEGIN
 		INSERT into ediciones(tipo) VALUES(tipo_edicion);
 	END$$
@@ -174,7 +182,7 @@ CREATE OR REPLACE PROCEDURE getFormatos()
 	END$$
 DELIMITER ;
 
--- POST
+-- PUT
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE updateFormato(IN id_formato int(9),
 									IN tipo_formato varchar(25))
@@ -185,9 +193,9 @@ CREATE OR REPLACE PROCEDURE updateFormato(IN id_formato int(9),
 	END$$
 DELIMITER ;
 
--- PUT
+-- POST
 DELIMITER $$
-CREATE OR REPLACE PROCEDURE putFormato(IN tipo_formato varchar(25))
+CREATE OR REPLACE PROCEDURE createFormato(IN tipo_formato varchar(25))
 	BEGIN
 		INSERT into formatos(tipo) VALUES(tipo_formato);
 	END$$
@@ -206,10 +214,10 @@ DELIMITER ;
 
 -- ----------- VALORES POR DEFECTO ------------------------------------
 -- TEMAS
-call putTema("Fantasia");
-call putTema("Terror");
-call putTema("Romance");
-call putTema("Aventura");
+call createTema("Fantasia");
+call createTema("Terror");
+call createTema("Romance");
+call createTema("Aventura");
 
 -- AUTORES
 call putAutor('Beltran Labios Bonitos');
@@ -219,21 +227,23 @@ INSERT INTO Autores(nombre) VALUES('Caballero Chavero')
 
 
 -- FORMATO
-call putFormato('Tapa Blanda');
-call putFormato('Tapa Dura');
-call putFormato('Digital');
-call putFormato('De bolsillo');
+call createFormato('Tapa Blanda');
+call createFormato('Tapa Dura');
+call createFormato('Digital');
+call createFormato('De bolsillo');
 
 -- EDICION
-call putEdicion('Especial');
-call putEdicion('Aniversario');
-call putEdicion('Pirata');
+call createEdicion('Especial');
+call createEdicion('Aniversario');
+call createEdicion('Pirata');
 
 
 -- ########################### CREAR USUARIO ####################
 -- CREATE USER 'portalo'@'%' -> PAra conectarse desde cualqueir host
-CREATE USER 'portalo'@'localhost' IDENTIFIED BY '12345';
+
+/* CREATE USER 'portalo'@'localhost' IDENTIFIED BY '12345';
 GRANT ALL PRIVILEGES ON LibreriaNET.* TO 'portalo'@'localhost';
+
 -- Refrescar privilegios
 FLUSH PRIVILEGES; 
 
@@ -241,3 +251,4 @@ FLUSH PRIVILEGES;
 GRANT ALL PRIVILEGES ON *.* TO 'portalo'@'192.168.1.%' 
 IDENTIFIED BY '12345' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
+*/
