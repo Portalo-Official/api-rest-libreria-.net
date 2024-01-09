@@ -31,10 +31,10 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
 
         public EdicionDTO read(long id_entity)
         {
-            using (MySqlCommand command = new MySqlCommand("getEdicion", connection))
+            using (MySqlCommand command = new MySqlCommand("findEdicionById", connection))
             {
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@id", id_entity);
+                command.Parameters.AddWithValue("@id_edicion", id_entity);
 
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {

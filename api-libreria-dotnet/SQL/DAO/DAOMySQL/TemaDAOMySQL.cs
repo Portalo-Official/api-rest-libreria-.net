@@ -4,6 +4,7 @@ using pruebaSantiAPI_REST.SQL.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Web;
 
 namespace pruebaSantiAPI_REST.SQL.DAO
@@ -32,7 +33,32 @@ namespace pruebaSantiAPI_REST.SQL.DAO
 
         public DTO_Tema read(int id_entity)
         {
-            throw new NotImplementedException();
+            Response response = new Response();
+            DTO_Tema temaEncontrado=null;
+            try
+            {
+                MySqlCommand command = new MySqlCommand("findTemaById", connection);
+
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@id_tema", id_entity);
+
+                MySqlDataReader reader = command.ExecuteReader();
+
+                while(reader.Read())
+                {
+                    temaEncontrado = DTO_Tema.FromDataReader(reader);
+                }
+                
+                response.OK = "Tema: " + temaEncontrado.Tipo + " encontrado nene";
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Error = ex.Message;
+            }
+
+            return temaEncontrado;
         }
 
         public Response update(DTO_Tema entity)
@@ -48,11 +74,11 @@ namespace pruebaSantiAPI_REST.SQL.DAO
 
                     command.ExecuteNonQuery();
                 }
-                response.OK = "Tema Actualizado "+entity.Tipo+" nene";
+                response.MessageSuccess("Tema Actualizado " + entity.Tipo + " nene");
             }catch(Exception ex)
             {
                 
-                response.Error = ex.Message;
+                response.MessageError(ex.Message);
             }
 
             return response;
@@ -60,14 +86,23 @@ namespace pruebaSantiAPI_REST.SQL.DAO
 
         public Response delete(int id_entity)
         {
-            using (MySqlCommand command = new MySqlCommand("deleteTema", connection))
+            Response response=new Response();
+            
+            try
             {
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@id_Tema", id_entity);
+                using (MySqlCommand command = new MySqlCommand("deleteTema", connection))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@id_Tema", id_entity);
 
-                command.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
+                }
+                response.MessageSuccess("Tema eliminado con existo");
+            }catch(Exception ex)
+            {
+                response.MessageError(ex.Message);
             }
-            return null;
+            return response;
         }
 
         public List<DTO_Tema> findAll()

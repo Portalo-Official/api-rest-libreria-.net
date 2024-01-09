@@ -71,9 +71,15 @@ namespace pruebaSantiAPI_REST.Controllers
 
         [HttpPost]
         [Route("tema-controller")]
-        public string postTemas()
+        public Response postTemas(Request request)
         {
-            return "Actualizar tema";
+
+            DTO_Tema temaNuevo = new DTO_Tema()
+            {
+                Id = request.Id,
+                Tipo = request.Name
+            };
+            return temaDAO.create(temaNuevo);
         }
 
         [HttpDelete]

@@ -57,13 +57,7 @@ CREATE OR REPLACE PROCEDURE updateTema(IN id_temaViejo int(9),
 	END$$
 DELIMITER ;
 
--- FindByID
-DELIMITER $$
-CREATE OR REPLACE PROCEDURE getTemaById(IN id_tema int(9))
-	BEGIN
-		Select Id, Tema FROM Temas WHERE id=id_tema;
-	END$$
-DELIMITER ;
+
 
 -- ##################################################################################
 -- ############################ AUTOR ###############################################
