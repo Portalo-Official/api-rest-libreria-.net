@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using pruebaSantiAPI_REST.Models;
+using pruebaSantiAPI_REST.Models.entity;
 using pruebaSantiAPI_REST.SQL.DTO;
 using System;
 using System.Collections.Generic;
@@ -8,17 +9,16 @@ using System.Web;
 
 namespace pruebaSantiAPI_REST.SQL.Mapper
 {
-    public class TemaMapper : IMapper<DTO_Tema, MySqlDataReader>
+    public class AutorMapper : IMapper<AutorDTO, MySqlDataReader>
     {
-        public DTO_Tema MapToDto(MySqlDataReader reader)
+        public AutorDTO MapToDto(MySqlDataReader reader)
         {
-            return new DTO_Tema
+
+            return new AutorDTO
             {
                 Id = reader.GetInt64("id"),
-                Tipo = reader.GetString("tipo")
+                Nombre = reader.GetString("nombre")
             };
         }
-
-        
     }
 }

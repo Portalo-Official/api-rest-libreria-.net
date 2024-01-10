@@ -1,4 +1,9 @@
-﻿using System;
+﻿using pruebaSantiAPI_REST.Models;
+using pruebaSantiAPI_REST.Models.entity;
+using pruebaSantiAPI_REST.SQL.DAO;
+using pruebaSantiAPI_REST.SQL.DAO.DAOMySQL;
+using pruebaSantiAPI_REST.SQL.DAO.interfaceDAO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,29 +15,49 @@ namespace pruebaSantiAPI_REST.Controllers
     [RoutePrefix("api/edicion")]
     public class EdicionesController : ApiController
     {
+
+        private ConnectionBD connection;
+        private IEdicionDAO edicionDAO;
+        public EdicionesController()
+        {
+            connection = ConnectionBD.Instance;
+            edicionDAO = new EdicionDAOMySQL(connection.GetConnection());
+        }
+
+
         [HttpPost]
         [Route("ediciones-controller")]
-        public string postEdiciones()
+        public Response postEdiciones(Request request)
         {
-            return "Actualizar ediciones";
+            EdicionDTO edicionNueva = new EdicionDTO()
+            {
+                Id = request.Id,
+                Tipo = request.Name
+            };
+            return edicionDAO.create(edicionNueva) ;
         }
+
+
         [HttpGet]
         [Route("ediciones-controller")]
-        public List<string> getEdiciones()
+        public List<EdicionDTO> getEdiciones()
         {
-            return new List<string> { "Especial", "Estandar", "Coleccionista" };
+            return edicionDAO.findAll();
         }
+
         [HttpPut]
         [Route("ediciones-controller")]
-        public string putEdiciones()
+        public Response putEdiciones(Request request)
         {
-            return "Insertando ediciones";
+           // EdicionDTO edicionActualizada = new EdicionDTO() { Id = request.Id, Tipo = request.Name };
+            return edicionDAO.update(new EdicionDTO{ Id = request.Id, Tipo = request.Name });
         }
+
         [HttpDelete]
         [Route("ediciones-controller")]
-        public string deleteEdiciones()
+        public Response deleteEdiciones(Request request)
         {
-            return "Borrando ediciones";
+            return edicionDAO.delete(request.Id);
         }
     }
 }

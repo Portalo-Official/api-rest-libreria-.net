@@ -2,6 +2,7 @@
 using pruebaSantiAPI_REST.Models;
 using pruebaSantiAPI_REST.Models.entity;
 using pruebaSantiAPI_REST.SQL.DAO.interfaceDAO;
+using pruebaSantiAPI_REST.SQL.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,58 +21,94 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
 
         public Response create(AutorDTO entity)
         {
-            using (MySqlCommand command = new MySqlCommand("putAutor", connection))
+            Response response = new Response();
+            try
             {
+                MySqlCommand command = new MySqlCommand("createAutor", connection);
+            
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@nuevoAutor", entity.Nombre);
+                command.Parameters.AddWithValue("@nombre_autor", entity.Nombre);
                 command.ExecuteNonQuery();
+                response.MessageSuccess("Autor creado con exito.");
+                response.Data = entity;
+            }catch (Exception ex)
+            {
+                response.MessageError(ex.Message);
             }
-            return null;
+            
+            return response;
         }
 
-        public AutorDTO read(long id_entity)
+        public Response read(long id_entity)
         {
-            using (MySqlCommand command = new MySqlCommand("getAutor", connection))
+            Response response = new Response();
+            try
             {
+                MySqlCommand command = new MySqlCommand("getAutor", connection);
+            
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@id", id_entity);
+                command.Parameters.AddWithValue("@id_autor", id_entity);
 
-                using (MySqlDataReader reader = command.ExecuteReader())
+                MySqlDataReader reader = command.ExecuteReader();
+                
+                if (reader.Read())
                 {
-                    if (reader.Read())
-                    {
-                        return new AutorDTO
-                        {
-                            Id = reader.GetInt64("Id"),
-                            Nombre = reader.GetString("Nombre")
-                        };
-                    }
-                    return null;
+                    response.Data = new AutorMapper().MapToDto(reader);
                 }
+                response.MessageSuccess("Autor encontrado.");
+                reader.Close();
+            }catch (Exception ex)
+            {
+                response.MessageError(ex.Message);
             }
+
+                
+            return response;
         }
 
         public Response update(AutorDTO entity)
         {
-            using (MySqlCommand command = new MySqlCommand("updateAutores", connection))
+            Response response= new Response();
+            try
             {
+
+                MySqlCommand command = new MySqlCommand("updateAutor", connection);
+            
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@id", entity.Id);
-                command.Parameters.AddWithValue("@autorActualizado", entity.Nombre);
+                command.Parameters.AddWithValue("@id_autor", entity.Id);
+                command.Parameters.AddWithValue("@nombreActualizado", entity.Nombre);
                 command.ExecuteNonQuery();
+                response.MessageSuccess("Autor actualizado con exito.");
+                response.Data = entity;
             }
-            return null;
+            catch (Exception ex)
+            {
+                response.MessageError(ex.Message);
+            }
+            
+            return response;
         }
 
         public Response delete(long id_entity)
         {
-            using (MySqlCommand command = new MySqlCommand("deleteAutor", connection))
+            Response response = new Response();
+            try
             {
+
+                MySqlCommand command = new MySqlCommand("deleteAutor", connection);
+            
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@id_Autor", id_entity);
                 command.ExecuteNonQuery();
+
+                response.MessageSuccess("Autor eliminado con exito");
+                response.Data = read(id_entity).Data;
+            }catch (Exception ex)
+            {
+                response.MessageError(ex.Message);
             }
-            return null;
+            
+            return response;
         }
 
         public List<AutorDTO> findAll()
@@ -84,13 +121,9 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
 
             while (reader.Read())
             {
-                autores.Add(new AutorDTO
-                {
-                    Id = reader.GetInt64("Id"),
-                    Nombre = reader.GetString("Nombre")
-                });
+                autores.Add(new AutorMapper().MapToDto(reader));
             }
-
+            reader.Close();
             return autores;
         }
     }

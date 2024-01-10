@@ -54,6 +54,13 @@ namespace pruebaSantiAPI_REST.Controllers
             return this.temaDAO.findAll();
         }
 
+        [HttpGet]
+        [Route("tema-controller/id")]
+        public Response getTemaById(Request request)
+        {
+            return temaDAO.read(request.Id);
+        }
+
         [HttpPut]
         [Route("tema-controller")]
         public Response putTemas(Request request)
@@ -84,9 +91,9 @@ namespace pruebaSantiAPI_REST.Controllers
 
         [HttpDelete]
         [Route("tema-controller")]
-        public string deleteTema()
+        public Response deleteTema(Request request)
         {
-            return "Borrar tema";
+            return temaDAO.delete(request.Id);
         }
     }
 }

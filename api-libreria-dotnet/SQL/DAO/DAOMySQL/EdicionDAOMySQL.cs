@@ -2,6 +2,7 @@
 using pruebaSantiAPI_REST.Models;
 using pruebaSantiAPI_REST.Models.entity;
 using pruebaSantiAPI_REST.SQL.DAO.interfaceDAO;
+using pruebaSantiAPI_REST.SQL.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,57 +21,104 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
 
         public Response create(EdicionDTO entity)
         {
-            using (MySqlCommand command = new MySqlCommand("putEdicion", connection))
+            Response response = new Response();
+            try
             {
+                MySqlCommand command = new MySqlCommand("createEdicion", connection);
+
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@nuevaEdicion", entity.Tipo);
-                command.ExecuteNonQuery();
+                command.Parameters.AddWithValue("@tipo_edicion", entity.Tipo);
+                command.ExecuteReader();
+
+
+                response.MessageSuccess("Edicion "+entity.Tipo+" creada con exito");
+            }catch (Exception ex)
+            {
+                response.MessageError(ex.Message);
             }
-            return null;
+            
+            return response;
         }
 
-        public EdicionDTO read(long id_entity)
+        public Response read(long id_entity)
         {
-            using (MySqlCommand command = new MySqlCommand("findEdicionById", connection))
+            Response response = new Response();
+            
+            try
             {
+                MySqlCommand command = new MySqlCommand("findEdicionById", connection);
+
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@id_edicion", id_entity);
 
-                using (MySqlDataReader reader = command.ExecuteReader())
+                MySqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
                 {
-                    if (reader.Read())
-                    {
-                        return new EdicionDTO
-                        {
-                            Id = reader.GetInt64("Id"),
-                            Tipo = reader.GetString("Tipo")
-                        };
-                    }
-                    return null;
+                  response.Data = new EdicionMapper().MapToDto(reader);
                 }
+                reader.Close();
+                response.MessageSuccess("Edicion id:"+id_entity+", Leido con exito.");
+            }catch (Exception ex)
+            {
+                response.MessageError(ex.Message);
             }
+
+
+            return response;     
+            
         }
 
         public Response update(EdicionDTO entity)
         {
-            using (MySqlCommand command = new MySqlCommand("updateEdiciones", connection))
+            Response response = new Response();
+            try
             {
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@id", entity.Id);
-                command.Parameters.AddWithValue("@edicionActualizada", entity.Tipo);
-                command.ExecuteNonQuery();
+                MySqlCommand ejecucion = new MySqlCommand("updateEdiciones", connection);
+
+                string query = @"call updateEdicion('@id_edicion' , '@tipo_edicion')";
+                // Concatendo entity.id+"" para que sea string
+                query = query.Replace("@id_edicion",  entity.Id+"");
+                query = query.Replace("@tipo_edicion",  entity.Tipo);
+                ejecucion.CommandText = query;
+
+                ejecucion.ExecuteNonQuery();
+
+                response.MessageSuccess("Edicion" + entity.Tipo + " Actualizada");
             }
-            return null;
+            catch (Exception ex)
+            {
+                response.MessageError(ex.Message);
+            }
+
+
+            //MySqlCommand command = new MySqlCommand("updateEdiciones", connection);
+            
+            //command.CommandType = System.Data.CommandType.StoredProcedure;
+            //command.Parameters.AddWithValue("@id", entity.Id);
+            //command.Parameters.AddWithValue("@edicionActualizada", entity.Tipo);
+            //command.ExecuteNonQuery();
+            
+            return response;
         }
 
         public Response delete(long id_entity)
         {
-            using (MySqlCommand command = new MySqlCommand("deleteEdicion", connection))
+            Response response = new Response();
+            try
             {
+                MySqlCommand command = new MySqlCommand("deleteEdicion", connection);
+
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@id_Edicion", id_entity);
                 command.ExecuteNonQuery();
+                response.MessageSuccess("Registro Borrado con existo.");
             }
+            catch (Exception ex)
+            {
+                response.MessageError(ex.Message);
+            }
+            
             return new Response();
         }
 
@@ -84,13 +132,9 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
 
             while (reader.Read())
             {
-                ediciones.Add(new EdicionDTO
-                {
-                    Id = reader.GetInt64("Id"),
-                    Tipo = reader.GetString("Tipo")
-                });
+                ediciones.Add(new EdicionMapper().MapToDto(reader));
             }
-
+            reader.Close();
             return ediciones;
         }
     }

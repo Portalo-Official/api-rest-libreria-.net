@@ -1,4 +1,9 @@
-﻿using System;
+﻿using pruebaSantiAPI_REST.Models;
+using pruebaSantiAPI_REST.Models.entity;
+using pruebaSantiAPI_REST.SQL.DAO;
+using pruebaSantiAPI_REST.SQL.DAO.DAOMySQL;
+using pruebaSantiAPI_REST.SQL.DAO.interfaceDAO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,29 +15,37 @@ namespace pruebaSantiAPI_REST.Controllers
     [RoutePrefix("api/autor")]
     public class AutoresController : ApiController
     {
+        private IAutorDAO autoresDAO;
+        private ConnectionBD connection;
+
+        public AutoresController() { 
+            connection = ConnectionBD.Instance;
+            autoresDAO = new AutoresDAOMySQL(connection.GetConnection());
+        }
+
         [HttpPost]
         [Route("autores-controller")]
-        public string postAutores()
+        public Response postAutores(Request request)
         {
-            return "Actualizar autores";
+            return autoresDAO.create(new AutorDTO { Id=request.Id, Nombre= request.Name});
         }
         [HttpGet]
         [Route("autores-controller")]
-        public List<string> getAutores()
+        public List<AutorDTO> getAutores()
         {
-            return new List<string> { "Rebecca Yarros", "JK Rowling", "Cassandra Clare" };
+            return autoresDAO.findAll();
         }
         [HttpPut]
         [Route("autores-controller")]
-        public string putAutores()
+        public Response putAutores(Request request)
         {
-            return "Insertando autores";
+            return autoresDAO.update(new AutorDTO { Id=request.Id, Nombre=request.Name});
         }
         [HttpDelete]
         [Route("autores-controller")]
-        public string deleteAutores()
+        public Response deleteAutores(Request request)
         {
-            return "Borrando autores";
+            return autoresDAO.delete(request.Id);
         }
     }
 }

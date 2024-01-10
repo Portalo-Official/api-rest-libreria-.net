@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using pruebaSantiAPI_REST.Models;
 using pruebaSantiAPI_REST.SQL.DTO;
+using pruebaSantiAPI_REST.SQL.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,16 +23,26 @@ namespace pruebaSantiAPI_REST.SQL.DAO
 
         public Response create(DTO_Tema entity)
         {
-            using (MySqlCommand command = new MySqlCommand("putTema", connection))
+            Response response = new Response();
+            try
+            {
+
+            using (MySqlCommand command = new MySqlCommand("createTema", connection))
             {
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@nuevoTema", entity.Tipo);
+                command.Parameters.AddWithValue("@temaNuevo", entity.Tipo);
                 command.ExecuteNonQuery();
+                response.MessageSuccess("Creado con exito");
+                response.Data = entity;
             }
-            return null;
+            }catch (Exception ex)
+            {
+                response.MessageError(ex.Message);
+            }
+            return response;
         }
 
-        public DTO_Tema read(int id_entity)
+        public Response read(long id_entity)
         {
             Response response = new Response();
             DTO_Tema temaEncontrado=null;
@@ -46,19 +57,18 @@ namespace pruebaSantiAPI_REST.SQL.DAO
 
                 while(reader.Read())
                 {
-                    temaEncontrado = DTO_Tema.FromDataReader(reader);
+                    response.Data = new TemaMapper().MapToDto(reader);
                 }
-                
-                response.OK = "Tema: " + temaEncontrado.Tipo + " encontrado nene";
-
+                // Cerrar reader
+                reader.Close();
+                response.MessageSuccess("Tema: " + temaEncontrado.Tipo + " encontrado nene");
             }
             catch (Exception ex)
             {
-
-                response.Error = ex.Message;
+                response.MessageError(ex.Message);
             }
 
-            return temaEncontrado;
+            return response;
         }
 
         public Response update(DTO_Tema entity)
@@ -84,19 +94,20 @@ namespace pruebaSantiAPI_REST.SQL.DAO
             return response;
         }
 
-        public Response delete(int id_entity)
+        public Response delete(long id_entity)
         {
             Response response=new Response();
             
             try
             {
-                using (MySqlCommand command = new MySqlCommand("deleteTema", connection))
-                {
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@id_Tema", id_entity);
+                MySqlCommand ejecucion = new MySqlCommand("updateEdiciones", connection);
 
-                    command.ExecuteNonQuery();
-                }
+                string query = @"call deleteTema('@temaBorrar')";
+                // Concatendo entity.id+"" para que sea string
+                query = query.Replace("@temaBorrar", id_entity.ToString());
+                ejecucion.CommandText = query;
+                ejecucion.ExecuteNonQuery();
+                
                 response.MessageSuccess("Tema eliminado con existo");
             }catch(Exception ex)
             {

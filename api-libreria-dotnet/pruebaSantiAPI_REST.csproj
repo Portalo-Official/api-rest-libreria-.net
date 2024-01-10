@@ -208,7 +208,10 @@
     <Compile Include="Models\entity\DTO_Libro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\entity\DTO_Tema.cs" />
+    <Compile Include="SQL\Mapper\FormatoMapper.cs" />
+    <Compile Include="SQL\Mapper\AutorMapper.cs" />
     <Compile Include="SQL\Mapper\IMapper.cs" />
+    <Compile Include="SQL\Mapper\EdicionMapper .cs" />
     <Compile Include="SQL\Mapper\TemaMapper.cs" />
   </ItemGroup>
   <ItemGroup>
