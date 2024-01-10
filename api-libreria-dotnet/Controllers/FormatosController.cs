@@ -1,4 +1,9 @@
-﻿using System;
+﻿using pruebaSantiAPI_REST.Models;
+using pruebaSantiAPI_REST.Models.entity;
+using pruebaSantiAPI_REST.SQL.DAO;
+using pruebaSantiAPI_REST.SQL.DAO.DAOMySQL;
+using pruebaSantiAPI_REST.SQL.DAO.interfaceDAO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,32 +12,45 @@ using System.Web.Http;
 
 namespace pruebaSantiAPI_REST.Controllers
 {
+
     [RoutePrefix("api/formato")]
     public class FormatosController : ApiController
     {
+
+        private IFormatoDAO formatoDAO;
+        private ConnectionBD connectionBD;
+
+        public FormatosController()
+        {
+            this.connectionBD= ConnectionBD.Instance;
+            formatoDAO = new FormatoDAOMySQL(this.connectionBD.GetConnection());
+        }
+
+
         [HttpPost]
         [Route("formatos-controller")]
-        public string postFormatos()
+        public Response postFormatos(Request request)
         {
-            return "Actualizar formatos";
+            return formatoDAO.create(new FormatoDTO { Id=request.Id, Tipo=request.Name});
         }
         [HttpGet]
         [Route("formatos-controller")]
-        public List<string> getFormatos()
+        public List<FormatoDTO> getFormatos()
         {
-            return new List<string> { "Tapa blanda", "Tapa dura", "Edicion bolsillo" };
+            return formatoDAO.findAll();
         }
+
         [HttpPut]
         [Route("formatos-controller")]
-        public string putFormatos()
+        public Response putFormatos(Request request)
         {
-            return "Insertando formatos";
+            return formatoDAO.update(new FormatoDTO { Id=request.Id, Tipo=request.Name});
         }
         [HttpDelete]
         [Route("formatos-controller")]
-        public string deleteFormatos()
+        public Response deleteFormatos(Request request)
         {
-            return "Borrando formatos";
+            return formatoDAO.delete(request.Id);
         }
     }
 }

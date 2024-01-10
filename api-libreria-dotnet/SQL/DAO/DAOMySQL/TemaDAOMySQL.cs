@@ -100,10 +100,10 @@ namespace pruebaSantiAPI_REST.SQL.DAO
             
             try
             {
-                MySqlCommand ejecucion = new MySqlCommand("updateEdiciones", connection);
+                MySqlCommand ejecucion = new MySqlCommand("deleteTema()", connection);
 
                 string query = @"call deleteTema('@temaBorrar')";
-                // Concatendo entity.id+"" para que sea string
+                // Concatendo entity.id+"" para que sea string -> Quitado
                 query = query.Replace("@temaBorrar", id_entity.ToString());
                 ejecucion.CommandText = query;
                 ejecucion.ExecuteNonQuery();
@@ -128,7 +128,7 @@ namespace pruebaSantiAPI_REST.SQL.DAO
 
             while (reader.Read())
             {
-                temas.Add(DTO_Tema.FromDataReader(reader));
+                temas.Add( new TemaMapper().MapToDto(reader));
             }
             reader.Close();
             return temas;

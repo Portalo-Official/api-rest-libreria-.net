@@ -15,7 +15,7 @@ namespace pruebaSantiAPI_REST.SQL.Mapper
             return new DTO_Tema
             {
                 Id = reader.GetInt64("id"),
-                Tipo = reader.GetString("tipo")
+                Tipo = reader.GetFieldValue<string>(1) //Empieza en el indice 0
             };
         }
 
