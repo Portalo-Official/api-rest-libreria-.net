@@ -181,6 +181,7 @@
     <Compile Include="Controllers\AutoresController.cs" />
     <Compile Include="Controllers\EdicionesController.cs" />
     <Compile Include="Controllers\FormatosController.cs" />
+    <Compile Include="Controllers\LibroController.cs" />
     <Compile Include="Controllers\TemasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -194,17 +195,20 @@
     <Compile Include="Models\entity\EdicionDTO.cs" />
     <Compile Include="Models\entity\FormatoDTO.cs" />
     <Compile Include="Models\Request.cs" />
+    <Compile Include="Models\RequestLibro.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Services\ServiceTema.cs" />
     <Compile Include="SQL\ConnectionBD.cs" />
     <Compile Include="SQL\DAO\DAOMySQL\AutorDAOMySQL.cs" />
     <Compile Include="SQL\DAO\DAOMySQL\EdicionDAOMySQL.cs" />
     <Compile Include="SQL\DAO\DAOMySQL\FormatoDAOMySQL.cs" />
+    <Compile Include="SQL\DAO\DAOMySQL\LibroDaoMySQL.cs" />
     <Compile Include="SQL\DAO\DAOMySQL\TemaDAOMySQL.cs" />
     <Compile Include="SQL\DAO\interfaceDAO\IAutorDAO.cs" />
     <Compile Include="SQL\DAO\interfaceDAO\IEdicionDAO.cs" />
     <Compile Include="SQL\DAO\interfaceDAO\GenericDAO.cs" />
     <Compile Include="SQL\DAO\interfaceDAO\IFormatoDAO.cs" />
+    <Compile Include="SQL\DAO\interfaceDAO\ILibroDao.cs" />
     <Compile Include="SQL\DAO\interfaceDAO\ITemaDAO.cs" />
     <Compile Include="Models\entity\DTO_Libro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -213,6 +217,7 @@
     <Compile Include="SQL\Mapper\AutorMapper.cs" />
     <Compile Include="SQL\Mapper\IMapper.cs" />
     <Compile Include="SQL\Mapper\EdicionMapper .cs" />
+    <Compile Include="SQL\Mapper\LibroMapper.cs" />
     <Compile Include="SQL\Mapper\TemaMapper.cs" />
   </ItemGroup>
   <ItemGroup>

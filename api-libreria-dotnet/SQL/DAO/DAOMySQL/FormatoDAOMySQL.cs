@@ -27,9 +27,9 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
             {
                 MySqlCommand ejecucion = this.connection.CreateCommand();
 
-                string query = @"call createFormato('@id_formato', '@tipo_formato')";
-                query = query.Replace("@id_formato", entity.Id.ToString());
-                query = query.Replace("@tipo_formato", entity.ToString());
+                string query = @"call createFormato('@tipo_formato')";
+                
+                query = query.Replace("@tipo_formato", entity.Tipo.ToString());
 
                 ejecucion.CommandText = query;
                 ejecucion.ExecuteNonQuery();
@@ -47,7 +47,24 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
 
         public Response delete(long id_entity)
         {
-            throw new NotImplementedException();
+            Response response = new Response();
+
+            try
+            {
+                MySqlCommand ejecucion = this.connection.CreateCommand();
+                string query = @"call deleteFormato('@id_formato')";
+                query = query.Replace("@id_formato", id_entity.ToString());
+
+                ejecucion.CommandText = query;
+                ejecucion.ExecuteNonQuery();
+                response.MessageSuccess("Formato eliminado con exito nene");
+            }
+            catch(Exception ex)
+            {
+                response.MessageError(ex.Message);
+            }
+
+            return response; 
         }
 
         public List<FormatoDTO> findAll()
@@ -63,7 +80,7 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
             {
                 formatos.Add(new FormatoMapper().MapToDto(resultado));
             }
-
+            resultado.Close();
             return formatos;
         }
 

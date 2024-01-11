@@ -1,0 +1,54 @@
+﻿using pruebaSantiAPI_REST.SQL.DAO.interfaceDAO;
+using pruebaSantiAPI_REST.SQL.DAO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using pruebaSantiAPI_REST.Models.entity;
+using pruebaSantiAPI_REST.Models;
+using pruebaSantiAPI_REST.Models.DTO;
+using pruebaSantiAPI_REST.SQL.DAO.DAOMySQL;
+
+namespace pruebaSantiAPI_REST.Controllers
+{
+    [RoutePrefix("api/libro")]
+    public class LibroController : ApiController
+    {
+        private ILibroDao libroDao;
+        private ConnectionBD connection;
+        public LibroController() {
+            connection = ConnectionBD.Instance;
+            libroDao = new LibroDaoMySQL(connection.GetConnection());
+        }
+
+        [HttpPost]
+        [Route("libro-controller")]
+        public Response postLibro(RequestLibro request)
+        {
+            return libroDao.create(new DTO_Libro {});
+        }
+        [HttpGet]
+        [Route("libro-controller")]
+        public List<DTO_Libro> getLibros()
+        {
+            return libroDao.findAll();
+        }
+
+        [HttpPut]
+        [Route("libro-controller")]
+        public Response putLibro(RequestLibro request)
+        {
+            return libroDao.update(new DTO_Libro {});
+        }
+        [HttpDelete]
+        [Route("libro-controller")]
+        public Response deleteLibro(Request request)
+        {
+            return libroDao.delete(request.Id);
+        }
+
+
+    }
+}
