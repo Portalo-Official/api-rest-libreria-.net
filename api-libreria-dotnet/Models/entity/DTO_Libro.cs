@@ -15,6 +15,7 @@ namespace pruebaSantiAPI_REST.Models.DTO
         public string Autor { get; set; }
         public string Edicion {  get; set; }
         public string Formato { get; set; }
+        public int Cantidad { get; set; }
         public DTO_Libro() { }
 
 

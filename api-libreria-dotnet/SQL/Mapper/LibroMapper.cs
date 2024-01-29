@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using pruebaSantiAPI_REST.Models;
 using pruebaSantiAPI_REST.Models.DTO;
 using pruebaSantiAPI_REST.Models.entity;
 using System;
@@ -22,6 +23,21 @@ namespace pruebaSantiAPI_REST.SQL.Mapper
                 Autor = reader.GetString("Autor"),
                 Edicion = reader.GetString("Edicion"),
                 Formato = reader.GetString("Formato")
+            };
+        }
+
+        public static DTO_Libro MapFromRequest(RequestLibro request)
+        {
+            return new DTO_Libro
+            {
+                Id = request.Id,
+                Titulo = request.Titulo,
+                ISBN = request.ISBN,
+                Tema = request.Tema,
+                Autor = request.Autor,
+                Edicion = request.Edicion,
+                Formato = request.Formato,
+                Precio = float.Parse(request.Precio)
             };
         }
     }

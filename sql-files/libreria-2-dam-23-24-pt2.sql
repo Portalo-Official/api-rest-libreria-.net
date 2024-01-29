@@ -57,6 +57,7 @@ CREATE TABLE Libros(
 	id_tema int(9) not null,
 	id_edicion int(9) not null,
 	id_formato int(9) not null,
+	URL VARCHAR(1000) ,
 	FOREIGN KEY (id_autor) REFERENCES autores(id) ON DELETE RESTRICT,
 	FOREIGN KEY (id_tema) REFERENCES temas(id) ON DELETE RESTRICT,
 	FOREIGN KEY (id_edicion) REFERENCES ediciones(id) ON DELETE RESTRICT,
@@ -93,6 +94,29 @@ CREATE OR REPLACE PROCEDURE getLibros()
 		INNER JOIN ediciones E  ON L.id_edicion = E.id
 		INNER JOIN formatos  F  ON L.id_formato = F.id
 		INNER JOIN almacen   A2 ON L.isbn       = A2.libro;
+	END$$
+DELIMITER ;
+
+-- GET libroBYID
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE getLibrosByISBN(IN p_isbn varchar(13))
+	BEGIN
+		SELECT 
+			L.id        as Id,
+			L.isbn      as ISBN,
+			L.titulo    as Titulo,
+			A.nombre    as Autor,
+			T.tema      as Tipo,
+			E.tipo      as Edicion,
+			F.tipo      as Formato,
+			A2.cantidad as Stock
+		FROM LIBROS L
+		INNER JOIN temas     T  ON L.id_tema    = T.id
+		INNER JOIN autores   A  ON L.id_autor   = A.id
+		INNER JOIN ediciones E  ON L.id_edicion = E.id
+		INNER JOIN formatos  F  ON L.id_formato = F.id
+		INNER JOIN almacen   A2 ON L.isbn       = A2.libro
+		WHERE L.isbn= p_isbn;
 	END$$
 DELIMITER ;
 
@@ -159,9 +183,57 @@ CREATE OR REPLACE PROCEDURE updateLibro(IN p_isbn    VARCHAR(13),
 DELIMITER ;
 
 -- DELETE
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE deleteLibro(IN p_isbn VARCHAR(13))
+	BEGIN
+		Delete from Libros WHERE isbn=p_isbn;
+	END$$
+DELIMITER ;
 
+-- ************* PROCEDURE ALMACEN ***********
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE compraVenta(IN cantidadLibro int(9),
+										IN isbn VARCHAR(13))
+	BEGIN 
+		DECLARE cantidadActual INT;
+		UPDATE almacen SET cantidad=cantidadLibro WHERE libro=isbn;
+	END $$ 
+DELIMITER ;
 
+CREATE TABLE USER(
 
+	id int(9) PRIMARY KEY AUTO_INCREMENT,
+	name varchar(25),
+	email varchar(80),
+	password varchar(35),
+);
+
+CREATE TABLE Compras(
+
+	id bigint(20) PRIMARY KEY AUTO_INCREMENT,
+	libro varchar(13),
+	fechaCompra DATE,
+	Precio varchar(13),
+);
+
+CREATE TABLE USER(
+
+	id bigint(20) PRIMARY KEY AUTO_INCREMENT,
+	isbn varchar(25),
+	fechaVenta DATE,
+	precio decimal(6,2),
+)
+
+DELIMITER $$
+CREATE OR REPLACE TRIGGER before_update_almacen
+	BEFORE UPDATE ON ALMACEN
+	IF (old.cantidad > new.cantidad) THEN
+		-- Venta
+		Insert 
+	ELSE
+		-- Compra
+		Insert
+DELIMITER $$
 
 
 -- Poblar BBDD
@@ -178,10 +250,10 @@ CALL createAutor('Jane Austen');
 CALL createAutor('Victor Hugo');
 
 -- Generar temas
-CALL createTema('Fantasía');
-CALL createTema('Ciencia Ficción');
+CALL createTema('Fantasia');
+CALL createTema('Ciencia Ficcion');
 CALL createTema('Misterio');
-CALL createTema('Histórico');
+CALL createTema('Historico');
 
 -- Generar ediciones
 CALL createEdicion('Especial');
@@ -195,18 +267,18 @@ CALL createFormato('Tapa Dura');
 CALL createFormato('Digital');
 
 -- Generar libros
-CALL createLibro('9780007117116', 'Cien Años de Soledad', 24.99, 'Gabriel García Márquez', 'Especial', 'Fantasía', 'Tapa Dura', 100);
-CALL createLibro('9780307352149', '1Q84', 21.99, 'Haruki Murakami', 'Aniversario', 'Ciencia Ficción', 'Tapa Blanda', 80);
+CALL createLibro('9780007117116', 'Cien Años de Soledad', 24.99, 'Gabriel García Márquez', 'Especial', 'Fantasia', 'Tapa Dura', 100);
+CALL createLibro('9780307352149', '1Q84', 21.99, 'Haruki Murakami', 'Aniversario', 'Ciencia Ficcion', 'Tapa Blanda', 80);
 CALL createLibro('9788498389327', 'Harry Potter y la Piedra Filosofal', 18.99, 'J.K. Rowling', 'Especial', 'Misterio', 'Digital', 120);
-CALL createLibro('9780553103540', 'Juego de Tronos', 29.99, 'George R.R. Martin', 'Aniversario', 'Histórico', 'Tapa Dura', 90);
-CALL createLibro('9788408190013', 'Eva Luna', 27.99, 'Isabel Allende', 'Especial', 'Fantasía', 'Tapa Blanda', 110);
+CALL createLibro('9780553103540', 'Juego de Tronos', 29.99, 'George R.R. Martin', 'Aniversario', 'Historico', 'Tapa Dura', 90);
+CALL createLibro('9788408190013', 'Eva Luna', 27.99, 'Isabel Allende', 'Especial', 'Fantasia', 'Tapa Blanda', 110);
 CALL createLibro('9780061122415', 'El Alquimista', 25.99, 'Paulo Coelho', 'Aniversario', 'Ciencia Ficción', 'Tapa Dura', 70);
 CALL createLibro('9780062693662', 'Asesinato en el Orient Express', 19.99, 'Agatha Christie', 'Especial', 'Misterio', 'Tapa Blanda', 95);
-CALL createLibro('9780307743657', 'It', 26.99, 'Stephen King', 'Aniversario', 'Histórico', 'De bolsillo', 85);
+CALL createLibro('9780307743657', 'It', 26.99, 'Stephen King', 'Aniversario', 'Historico', 'De bolsillo', 85);
 CALL createLibro('9780141439563', 'Orgullo y Prejuicio', 23.99, 'Jane Austen', 'Especial', 'Fantasía', 'Digital', 75);
 CALL createLibro('9780140449976', 'Los Miserables', 15.99, 'Victor Hugo', 'Aniversario', 'Ciencia Ficción', 'Tapa Dura', 105);
 CALL createLibro('9780307474278', 'Crónica del pájaro que da cuerda al mundo', 20.99, 'Haruki Murakami', 'Especial', 'Misterio', 'Tapa Blanda', 65);
 CALL createLibro('9788490628588', 'Harry Potter y las Reliquias de la Muerte', 22.99, 'J.K. Rowling', 'Aniversario', 'Fantasía', 'De bolsillo', 88);
-CALL createLibro('9788497593464', 'El nombre del viento', 24.99, 'Patrick Rothfuss', 'Especial', 'Histórico', 'Tapa Dura', 92);
-CALL createLibro('9780061122415', 'El Silmarillion', 28.99, 'J.R.R. Tolkien', 'Aniversario', 'Ciencia Ficción', 'Tapa Blanda', 78);
+CALL createLibro('9788497593464', 'El nombre del viento', 24.99, 'Patrick Rothfuss', 'Especial', 'Historico', 'Tapa Dura', 92);
+CALL createLibro('9780061122415', 'El Silmarillion', 28.99, 'J.R.R. Tolkien', 'Aniversario', 'Ciencia Ficcion', 'Tapa Blanda', 78);
 CALL createLibro('9780307474292', 'Cazadores de sombras: Ciudad de Hueso', 21.99, 'Cassandra Clare', 'Especial', 'Fantasía', 'Tapa Dura', 102);

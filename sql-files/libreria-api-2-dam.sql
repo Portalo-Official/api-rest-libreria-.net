@@ -392,12 +392,6 @@ call createFormato('Tapa Dura');
 call createFormato('Digital');
 call createFormato('De bolsillo');
 
--- EDICION
-call createEdicion('Especial');
-call createEdicion('Aniversario');
-call createEdicion('Pirata');
-
-
 
 
 -- Poblar BBDD
@@ -420,10 +414,10 @@ CALL createTema('Misterio');
 CALL createTema('Histórico');
 
 -- Generar ediciones
-CALL createEdicion('Especial');
-CALL createEdicion('Aniversario');
-CALL createEdicion('Pirata');
 CALL createEdicion('Coleccionista');
+call createEdicion('Especial');
+call createEdicion('Aniversario');
+call createEdicion('Pirata');
 
 -- Generar formatos
 CALL createFormato('Tapa Blanda');

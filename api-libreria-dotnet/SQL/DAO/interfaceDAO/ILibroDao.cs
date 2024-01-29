@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace pruebaSantiAPI_REST.SQL.DAO.interfaceDAO
 {
-    internal interface ILibroDao : GenericDAO<DTO_Libro,long>
+    internal interface ILibroDao : GenericDAO<DTO_Libro,string>
     {
     }
 }

@@ -10,6 +10,7 @@ using pruebaSantiAPI_REST.Models.entity;
 using pruebaSantiAPI_REST.Models;
 using pruebaSantiAPI_REST.Models.DTO;
 using pruebaSantiAPI_REST.SQL.DAO.DAOMySQL;
+using pruebaSantiAPI_REST.SQL.Mapper;
 
 namespace pruebaSantiAPI_REST.Controllers
 {
@@ -27,7 +28,7 @@ namespace pruebaSantiAPI_REST.Controllers
         [Route("libro-controller")]
         public Response postLibro(RequestLibro request)
         {
-            return libroDao.create(new DTO_Libro {});
+            return libroDao.create(LibroMapper.MapFromRequest(request));
         }
         [HttpGet]
         [Route("libro-controller")]
@@ -40,13 +41,13 @@ namespace pruebaSantiAPI_REST.Controllers
         [Route("libro-controller")]
         public Response putLibro(RequestLibro request)
         {
-            return libroDao.update(new DTO_Libro {});
+            return libroDao.update(LibroMapper.MapFromRequest(request));
         }
         [HttpDelete]
         [Route("libro-controller")]
-        public Response deleteLibro(Request request)
+        public Response deleteLibro(RequestLibro request)
         {
-            return libroDao.delete(request.Id);
+            return libroDao.delete(request.ISBN);
         }
 
 
