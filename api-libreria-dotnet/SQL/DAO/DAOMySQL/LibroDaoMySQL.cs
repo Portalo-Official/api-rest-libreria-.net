@@ -31,14 +31,7 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
                     
                     command.CommandType = System.Data.CommandType.StoredProcedure;
                     command.ExecuteNonQuery();
-                    string query = @"call createLibro(@p_isbn
-                                                      ,@p_titulo
-                                                      ,@p_precio
-                                                      ,@p_autor
-                                                      ,@p_edicion
-                                                      ,@p_tema
-                                                      ,@p_formato
-                                                      ,@p_stock)";
+                    string query = @"call createLibro(@p_isbn, @p_titulo,@p_precio,@p_autor, @p_edicion, @p_tema, @p_formato, @p_stock)";
                     query = query.Replace("@p_isbn", entity.ISBN);
                     query = query.Replace("@p_titulo", entity.Titulo);
                     query = query.Replace("@p_precio", entity.Precio.ToString());
@@ -54,8 +47,8 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
             }
             catch (Exception ex)
             {
-               // response.MessageError(ex.Message);
-                response.MessageError(entity.ISBN);
+                response.MessageError(ex.Message);
+               // response.MessageError(entity.ISBN);
             }
             return response;
         }

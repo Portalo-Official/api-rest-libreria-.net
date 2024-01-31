@@ -204,32 +204,6 @@ CREATE OR REPLACE PROCEDURE deleteFormato(IN id_formato int(9))
 DELIMITER ;
 
 
--- Valores por defecto
-
--- ----------- VALORES POR DEFECTO ------------------------------------
--- TEMAS
-call createTema("Fantasia");
-call createTema("Terror");
-call createTema("Romance");
-call createTema("Aventura");
-
--- AUTORES
-call putAutor('Beltran Labios Bonitos');
-INSERT INTO Autores(nombre) VALUES('Caballero Chavero')
-				, ('Rebecca Yarros'),('J. K. Rowling'),
-				 ('Cassandra Clare');
-
-
--- FORMATO
-call createFormato('Tapa Blanda');
-call createFormato('Tapa Dura');
-call createFormato('Digital');
-call createFormato('De bolsillo');
-
--- EDICION
-call createEdicion('Especial');
-call createEdicion('Aniversario');
-call createEdicion('Pirata');
 
 
 -- ########################### CREAR USUARIO ####################

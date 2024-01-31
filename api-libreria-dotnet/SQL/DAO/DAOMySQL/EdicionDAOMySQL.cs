@@ -29,7 +29,7 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@tipo_edicion", entity.Tipo);
                 command.ExecuteReader();
-
+              
 
                 response.MessageSuccess("Edicion "+entity.Tipo+" creada con exito");
             }catch (Exception ex)
@@ -85,13 +85,14 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
                 ejecucion.ExecuteNonQuery();
 
                 response.MessageSuccess("Edicion" + entity.Tipo + " Actualizada");
+
             }
             catch (Exception ex)
             {
                 response.MessageError(ex.Message);
             }
 
-
+            
             //MySqlCommand command = new MySqlCommand("updateEdiciones", connection);
             
             //command.CommandType = System.Data.CommandType.StoredProcedure;

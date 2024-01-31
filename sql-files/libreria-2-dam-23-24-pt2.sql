@@ -84,9 +84,10 @@ CREATE OR REPLACE PROCEDURE getLibros()
 			L.isbn      as ISBN,
 			L.titulo    as Titulo,
 			A.nombre    as Autor,
-			T.tema      as Tipo,
+			T.tema      as Tema,
 			E.tipo      as Edicion,
 			F.tipo      as Formato,
+			L.Precio    as Precio,
 			A2.cantidad as Stock
 		FROM LIBROS L
 		INNER JOIN temas     T  ON L.id_tema    = T.id
@@ -109,6 +110,7 @@ CREATE OR REPLACE PROCEDURE getLibrosByISBN(IN p_isbn varchar(13))
 			T.tema      as Tipo,
 			E.tipo      as Edicion,
 			F.tipo      as Formato,
+			L.Precio    as Precio,
 			A2.cantidad as Stock
 		FROM LIBROS L
 		INNER JOIN temas     T  ON L.id_tema    = T.id
@@ -237,8 +239,38 @@ DELIMITER $$
 
 
 -- Poblar BBDD
+-- Valores por defecto
+
+-- ----------- VALORES POR DEFECTO ------------------------------------
+-- TEMAS
+call createTema("Fantasia");
+call createTema("Terror");
+call createTema("Romance");
+call createTema("Aventura");
+CALL createTema('Fantasia');
+CALL createTema('Ciencia Ficcion');
+CALL createTema('Misterio');
+CALL createTema('Historico');
+
+
+-- FORMATO
+call createFormato('Tapa Blanda');
+call createFormato('Tapa Dura');
+call createFormato('Digital');
+call createFormato('De bolsillo');
+
+
+-- EDICION
+call createEdicion('Especial');
+call createEdicion('Aniversario');
+call createEdicion('Pirata');
+CALL createEdicion('Especial');
+CALL createEdicion('Aniversario');
+CALL createEdicion('Pirata');
+CALL createEdicion('Coleccionista');
+
 -- Generar autores
-CALL createAutor('Gabriel García Márquez');
+CALL createAutor('Gabriel Garcia Marquez');
 CALL createAutor('Haruki Murakami');
 CALL createAutor('J.K. Rowling');
 CALL createAutor('George R.R. Martin');
@@ -248,37 +280,27 @@ CALL createAutor('Agatha Christie');
 CALL createAutor('Stephen King');
 CALL createAutor('Jane Austen');
 CALL createAutor('Victor Hugo');
+call createAutor('Beltran Labios Bonitos');
+INSERT INTO Autores(nombre) VALUES('Caballero Chavero')
+				, ('Rebecca Yarros'),('J. K. Rowling'),
+				 ('Cassandra Clare');
 
--- Generar temas
-CALL createTema('Fantasia');
-CALL createTema('Ciencia Ficcion');
-CALL createTema('Misterio');
-CALL createTema('Historico');
 
--- Generar ediciones
-CALL createEdicion('Especial');
-CALL createEdicion('Aniversario');
-CALL createEdicion('Pirata');
-CALL createEdicion('Coleccionista');
-
--- Generar formatos
-CALL createFormato('Tapa Blanda');
-CALL createFormato('Tapa Dura');
-CALL createFormato('Digital');
 
 -- Generar libros
-CALL createLibro('9780007117116', 'Cien Años de Soledad', 24.99, 'Gabriel García Márquez', 'Especial', 'Fantasia', 'Tapa Dura', 100);
+CALL createLibro('9780007117116', 'Cien Años de Soledad', 24.99, 'Gabriel Garcia Marquez', 'Especial', 'Fantasia', 'Tapa Dura', 100);
 CALL createLibro('9780307352149', '1Q84', 21.99, 'Haruki Murakami', 'Aniversario', 'Ciencia Ficcion', 'Tapa Blanda', 80);
 CALL createLibro('9788498389327', 'Harry Potter y la Piedra Filosofal', 18.99, 'J.K. Rowling', 'Especial', 'Misterio', 'Digital', 120);
 CALL createLibro('9780553103540', 'Juego de Tronos', 29.99, 'George R.R. Martin', 'Aniversario', 'Historico', 'Tapa Dura', 90);
 CALL createLibro('9788408190013', 'Eva Luna', 27.99, 'Isabel Allende', 'Especial', 'Fantasia', 'Tapa Blanda', 110);
-CALL createLibro('9780061122415', 'El Alquimista', 25.99, 'Paulo Coelho', 'Aniversario', 'Ciencia Ficción', 'Tapa Dura', 70);
+CALL createLibro('9780061122415', 'El Alquimista', 25.99, 'Paulo Coelho', 'Aniversario', 'Ciencia Ficcion', 'Tapa Dura', 70);
 CALL createLibro('9780062693662', 'Asesinato en el Orient Express', 19.99, 'Agatha Christie', 'Especial', 'Misterio', 'Tapa Blanda', 95);
 CALL createLibro('9780307743657', 'It', 26.99, 'Stephen King', 'Aniversario', 'Historico', 'De bolsillo', 85);
-CALL createLibro('9780141439563', 'Orgullo y Prejuicio', 23.99, 'Jane Austen', 'Especial', 'Fantasía', 'Digital', 75);
-CALL createLibro('9780140449976', 'Los Miserables', 15.99, 'Victor Hugo', 'Aniversario', 'Ciencia Ficción', 'Tapa Dura', 105);
+CALL createLibro('9780141439563', 'Orgullo y Prejuicio', 23.99, 'Jane Austen', 'Especial', 'Fantasia', 'Digital', 75);
+CALL createLibro('9780140449976', 'Los Miserables', 15.99, 'Victor Hugo', 'Aniversario', 'Ciencia Ficcion', 'Tapa Dura', 105);
 CALL createLibro('9780307474278', 'Crónica del pájaro que da cuerda al mundo', 20.99, 'Haruki Murakami', 'Especial', 'Misterio', 'Tapa Blanda', 65);
 CALL createLibro('9788490628588', 'Harry Potter y las Reliquias de la Muerte', 22.99, 'J.K. Rowling', 'Aniversario', 'Fantasía', 'De bolsillo', 88);
-CALL createLibro('9788497593464', 'El nombre del viento', 24.99, 'Patrick Rothfuss', 'Especial', 'Historico', 'Tapa Dura', 92);
-CALL createLibro('9780061122415', 'El Silmarillion', 28.99, 'J.R.R. Tolkien', 'Aniversario', 'Ciencia Ficcion', 'Tapa Blanda', 78);
+CALL createLibro('9788497593464', 'El nombre del viento', 24.99, 'Jane Austen', 'Especial', 'Historico', 'Tapa Dura', 92);
+CALL createLibro('9780061122415', 'El Silmarillion', 28.99, 'J.K. Rowling', 'Aniversario', 'Ciencia Ficcion', 'Tapa Blanda', 78);
 CALL createLibro('9780307474292', 'Cazadores de sombras: Ciudad de Hueso', 21.99, 'Cassandra Clare', 'Especial', 'Fantasía', 'Tapa Dura', 102);
+CALL createLibro('9780007117111', 'inventado', 99.99, 'Gabriel Garcia Marquez', 'Especial', 'Fantasia', 'Tapa Dura', 10);

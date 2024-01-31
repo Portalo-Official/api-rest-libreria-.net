@@ -15,14 +15,15 @@ namespace pruebaSantiAPI_REST.SQL.Mapper
         {
             return new DTO_Libro
             {
-                Id = reader.GetInt64("id"),
+                Id = reader.GetInt64("Id"),
                 Titulo = reader.GetString("Titulo"),
                 ISBN = reader.GetString("ISBN"),
                 Precio = (float)reader.GetDecimal("Precio"), //TODO no tienes el precio en la procedure guarro
                 Tema = reader.GetString("Tema"),
                 Autor = reader.GetString("Autor"),
                 Edicion = reader.GetString("Edicion"),
-                Formato = reader.GetString("Formato")
+                Formato = reader.GetString("Formato"),
+                Cantidad = reader.GetInt32("Stock")
             };
         }
 
