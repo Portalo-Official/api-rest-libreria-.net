@@ -52,7 +52,7 @@ CREATE TABLE Libros(
 	id int(9) PRIMARY KEY AUTO_INCREMENT,
 	titulo varchar(250) not null,
 	isbn varchar(13) not null UNIQUE,
-	precio decimal(5,2) not null,
+	precio decimal(7,2) not null,
 	id_autor int(9) not null,
 	id_tema int(9) not null,
 	id_edicion int(9) not null,
@@ -303,4 +303,4 @@ CALL createLibro('9788490628588', 'Harry Potter y las Reliquias de la Muerte', 2
 CALL createLibro('9788497593464', 'El nombre del viento', 24.99, 'Jane Austen', 'Especial', 'Historico', 'Tapa Dura', 92);
 CALL createLibro('9780061122415', 'El Silmarillion', 28.99, 'J.K. Rowling', 'Aniversario', 'Ciencia Ficcion', 'Tapa Blanda', 78);
 CALL createLibro('9780307474292', 'Cazadores de sombras: Ciudad de Hueso', 21.99, 'Cassandra Clare', 'Especial', 'Fantasía', 'Tapa Dura', 102);
-CALL createLibro('9780007117111', 'inventado', 99.99, 'Gabriel Garcia Marquez', 'Especial', 'Fantasia', 'Tapa Dura', 10);
+CALL createLibro('9710007117111', 'inventado', 99.99, 'Gabriel Garcia Marquez', 'Especial', 'Fantasia', 'Tapa Dura', 10);

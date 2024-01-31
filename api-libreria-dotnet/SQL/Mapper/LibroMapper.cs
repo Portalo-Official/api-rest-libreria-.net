@@ -38,7 +38,8 @@ namespace pruebaSantiAPI_REST.SQL.Mapper
                 Autor = request.Autor,
                 Edicion = request.Edicion,
                 Formato = request.Formato,
-                Precio = float.Parse(request.Precio)
+                Precio = request.Precio,
+                Cantidad = request.Cantidad
             };
         }
     }

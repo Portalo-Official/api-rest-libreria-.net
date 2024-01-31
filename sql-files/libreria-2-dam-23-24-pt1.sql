@@ -209,7 +209,7 @@ DELIMITER ;
 -- ########################### CREAR USUARIO ####################
 -- CREATE USER 'portalo'@'%' -> PAra conectarse desde cualqueir host
 
-/* CREATE USER 'portalo'@'localhost' IDENTIFIED BY '12345';
+ CREATE USER 'portalo'@'localhost' IDENTIFIED BY '12345';
 GRANT ALL PRIVILEGES ON LibreriaNET.* TO 'portalo'@'localhost';
 
 -- Refrescar privilegios
@@ -219,4 +219,4 @@ FLUSH PRIVILEGES;
 GRANT ALL PRIVILEGES ON *.* TO 'portalo'@'192.168.1.%' 
 IDENTIFIED BY '12345' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
-*/
+

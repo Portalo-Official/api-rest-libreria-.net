@@ -23,6 +23,7 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
         public Response create(DTO_Libro entity)
         {
             Response response = new Response();
+            string query="";
             try
             {
 
@@ -30,17 +31,25 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
                 {
                     
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.ExecuteNonQuery();
-                    string query = @"call createLibro(@p_isbn, @p_titulo,@p_precio,@p_autor, @p_edicion, @p_tema, @p_formato, @p_stock)";
-                    query = query.Replace("@p_isbn", entity.ISBN);
-                    query = query.Replace("@p_titulo", entity.Titulo);
-                    query = query.Replace("@p_precio", entity.Precio.ToString());
-                    query = query.Replace("@p_autor", entity.Autor);
-                    query = query.Replace("@p_edicion", entity.Edicion);
-                    query = query.Replace("@p_tema", entity.Tema);
-                    query = query.Replace("@p_formato", entity.Formato);
-                    query = query.Replace("@p_stock", entity.Cantidad.ToString());
+                    command.Parameters.AddWithValue("@p_isbn", entity.ISBN);
+                    command.Parameters.AddWithValue("@p_titulo", entity.Titulo);
+                    command.Parameters.AddWithValue("@p_precio", entity.Precio.ToString());
+                    command.Parameters.AddWithValue("@p_autor", entity.Autor);
+                    command.Parameters.AddWithValue("@p_edicion", entity.Edicion);
+                    command.Parameters.AddWithValue("@p_tema", entity.Tema);
+                    command.Parameters.AddWithValue("@p_formato", entity.Formato);
+                    command.Parameters.AddWithValue("@p_stock", entity.Cantidad.ToString());
+                    //query = @"call createLibro(@p_isbn, @p_titulo,@p_precio,@p_autor, @p_edicion, @p_tema, @p_formato, @p_stock)";
+                    //query = query.Replace("@p_isbn", entity.ISBN);
+                    //query = query.Replace("@p_titulo", entity.Titulo);
+                    //query = query.Replace("@p_precio", entity.Precio.ToString());
+                    //query = query.Replace("@p_autor", entity.Autor);
+                    //query = query.Replace("@p_edicion", entity.Edicion);
+                    //query = query.Replace("@p_tema", entity.Tema);
+                    //query = query.Replace("@p_formato", entity.Formato);
+                    //query = query.Replace("@p_stock", entity.Cantidad.ToString());
 
+                    command.ExecuteNonQuery();
                     response.MessageSuccess("Creado con exito");
                     response.Data = entity;
                 }
@@ -48,7 +57,7 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
             catch (Exception ex)
             {
                 response.MessageError(ex.Message);
-               // response.MessageError(entity.ISBN);
+                //response.MessageError(query);
             }
             return response;
         }
@@ -125,12 +134,11 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
             try
             {
 
-                using (MySqlCommand command = new MySqlCommand("createLibro", connection))
+                using (MySqlCommand command = new MySqlCommand("updateLibro", connection))
                 {
 
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.ExecuteNonQuery();
-                    string query = @"call createLibro(@p_isbn
+                    string query = @"call updateLibro(@p_isbn
                                                       ,@p_titulo
                                                       ,@p_precio
                                                       ,@p_autor
@@ -145,6 +153,9 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
                     query = query.Replace("@p_edicion", entity.Edicion);
                     query = query.Replace("@p_tema", entity.Tema);
                     query = query.Replace("@p_formato", entity.Formato);
+
+                    command.CommandText = query;
+                    command.ExecuteNonQuery();
 
                     response.MessageSuccess("Actualizado con exito");
                     response.Data = entity;
