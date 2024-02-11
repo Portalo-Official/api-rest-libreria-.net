@@ -173,7 +173,7 @@ CREATE OR REPLACE PROCEDURE updateLibro(IN p_isbn    VARCHAR(13),
 		SELECT id INTO v_id_autor   FROM autores   WHERE nombre = p_autor   limit 1;
 		SELECT id INTO v_id_edicion FROM ediciones WHERE tipo   = p_edicion limit 1;
 		SELECT id INTO v_id_tema    FROM temas     WHERE tema   = p_tema    limit 1;
-		SELECT id INTO v_id_formato FROM formatos  WHERE formato= p_formato limit 1;
+		SELECT id INTO v_id_formato FROM formatos  WHERE tipo= p_formato limit 1;
 		-- Actualizar
 		UPDATE Libros
    		SET
@@ -311,7 +311,12 @@ CALL createLibro('9780491272355', 'El Silmarillion', 28.99, 'J.K. Rowling', 'Ani
 CALL createLibro('9780503474192', 'Cazadores de sombras: Ciudad de Hueso', 21.99, 'Cassandra Clare', 'Especial', 'Fantasía', 'Tapa Dura', 102, 'https://i.ibb.co/h1gZryV/51-I7qd-Op6-GL-AC-UF1000-1000-QL80.jpg');
 CALL createLibro('9760007774242', 'Cazadores de sombras: Ciudad de las almas perdidas', 21.99, 'Cassandra Clare', 'Especial', 'Fantasía', 'Tapa Dura', 4, 'https://i.ibb.co/gDRwr2C/visd-0000-JPG019-T0.jpg');
 CALL createLibro('9710807117511', 'Del Amor a otros Demonios', 49.99, 'Gabriel Garcia Marquez', 'Especial', 'Fantasia', 'De bolsillo', 10, 'https://i.ibb.co/ZSyZ6cy/978849759242.jpg');
+CALL createLibro('9760807237519', 'Libro Prueba Prototipo', 129.99, 'Beltran Labios Bonitos', 'Especial', 'Fantasia', 'De bolsillo', 10, 'https://i.ibb.co/mz6F1Kp/167219770-127523866011194-8434310988880472619-n.jpg');
 
 -- Editar Libro
-CALL updateLibro('9710007117111', 'updatePrueba', 121.38, 'Beltran Labios Bonitos', 'Especial', 'Fantasia', 'Digital');
+CALL updateLibro('9710007117223', 'updatePrueba', 121.38, 'Beltran Labios Bonitos', 'Especial', 'Fantasia', 'Digital');
 
+/*
+URL para libros inventados
+https://i.ibb.co/mz6F1Kp/167219770-127523866011194-8434310988880472619-n.jpg
+*/
