@@ -108,7 +108,7 @@ CREATE OR REPLACE PROCEDURE getLibroByISBN(IN p_isbn varchar(13))
 			L.isbn      as ISBN,
 			L.titulo    as Titulo,
 			A.nombre    as Autor,
-			T.tema      as Tipo,
+			T.tema      as Tema,
 			E.tipo      as Edicion,
 			F.tipo      as Formato,
 			L.Precio    as Precio,
