@@ -10,7 +10,8 @@ namespace pruebaSantiAPI_REST
         public static void Register(HttpConfiguration config)
         {
             // Configuración y servicios de Web API
-
+            // CORS para poder conectar cualquier Frontend
+            config.EnableCors();
             // Rutas de Web API
             config.MapHttpAttributeRoutes();
 

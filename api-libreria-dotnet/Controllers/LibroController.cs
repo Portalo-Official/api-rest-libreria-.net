@@ -11,9 +11,11 @@ using pruebaSantiAPI_REST.Models;
 using pruebaSantiAPI_REST.Models.DTO;
 using pruebaSantiAPI_REST.SQL.DAO.DAOMySQL;
 using pruebaSantiAPI_REST.SQL.Mapper;
+using System.Web.Http.Cors;
 
 namespace pruebaSantiAPI_REST.Controllers
 {
+    [EnableCors(origins:"*", headers:"*", methods:"*")]
     [RoutePrefix("api/libro")]
     public class LibroController : ApiController
     {
