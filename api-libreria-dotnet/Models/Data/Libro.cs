@@ -15,6 +15,8 @@ namespace pruebaSantiAPI_REST.Models
         public double Precio { get; set; }
         public int Stock { get; set; }
 
+        public string URL { get; set; }
+
         // Constructores
         public Libro() { }
 

@@ -37,6 +37,13 @@ namespace pruebaSantiAPI_REST.Controllers
             return libroDao.findAll();
         }
 
+        [HttpGet]
+        [Route("libro-controller/isbn/{isbn}")]
+        public Response getLibroByISBN(RequestLibro request)
+        {
+            return libroDao.read(request.ISBN);
+        }
+
         [HttpPut]
         [Route("libro-controller")]
         public Response putLibro(RequestLibro request)

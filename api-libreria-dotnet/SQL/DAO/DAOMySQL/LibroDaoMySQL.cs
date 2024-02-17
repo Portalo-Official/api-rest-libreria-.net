@@ -24,6 +24,8 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
         {
             Response response = new Response();
             string query="";
+            // URL creada para los libros sin portada, este enlace esta para una cuenta personal mia.
+            string urlByDefecto = "https://i.ibb.co/mz6F1Kp/167219770-127523866011194-8434310988880472619-n.jpg";
             try
             {
 
@@ -39,6 +41,11 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
                     command.Parameters.AddWithValue("@p_tema", entity.Tema);
                     command.Parameters.AddWithValue("@p_formato", entity.Formato);
                     command.Parameters.AddWithValue("@p_stock", entity.Cantidad.ToString());
+                    if (entity.URL == null || entity.URL == "")
+                        command.Parameters.AddWithValue("@p_url", urlByDefecto);
+                    else
+                        command.Parameters.AddWithValue("@p_url", entity.URL);
+
                     //query = @"call createLibro(@p_isbn, @p_titulo,@p_precio,@p_autor, @p_edicion, @p_tema, @p_formato, @p_stock)";
                     //query = query.Replace("@p_isbn", entity.ISBN);
                     //query = query.Replace("@p_titulo", entity.Titulo);
@@ -99,13 +106,15 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
             return libros;
         }
 
+        
+
         public Response read(string id_entity)
         {
             Response response = new Response();
             
             try
             {
-                MySqlCommand command = new MySqlCommand("getLibrosByISBN", connection);
+                MySqlCommand command = new MySqlCommand("getLibroByISBN", connection);
 
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@p_isbn", id_entity);
@@ -133,28 +142,19 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
             Response response = new Response();
             try
             {
-
+               
                 using (MySqlCommand command = new MySqlCommand("updateLibro", connection))
                 {
 
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    string query = @"call updateLibro(@p_isbn
-                                                      ,@p_titulo
-                                                      ,@p_precio
-                                                      ,@p_autor
-                                                      ,@p_edicion
-                                                      ,@p_tema
-                                                      ,@p_formato
-                                                      )";
-                    query = query.Replace("@p_isbn", entity.ISBN);
-                    query = query.Replace("@p_titulo", entity.Titulo);
-                    query = query.Replace("@p_precio", entity.Precio.ToString());
-                    query = query.Replace("@p_autor", entity.Autor);
-                    query = query.Replace("@p_edicion", entity.Edicion);
-                    query = query.Replace("@p_tema", entity.Tema);
-                    query = query.Replace("@p_formato", entity.Formato);
-
-                    command.CommandText = query;
+                    command.Parameters.AddWithValue("@p_isbn", entity.ISBN);
+                    command.Parameters.AddWithValue("@p_titulo", entity.Titulo);
+                    command.Parameters.AddWithValue("@p_precio", entity.Precio.ToString());
+                    command.Parameters.AddWithValue("@p_autor", entity.Autor);
+                    command.Parameters.AddWithValue("@p_edicion", entity.Edicion);
+                    command.Parameters.AddWithValue("@p_tema", entity.Tema);
+                    command.Parameters.AddWithValue("@p_formato", entity.Formato);
+                    
                     command.ExecuteNonQuery();
 
                     response.MessageSuccess("Actualizado con exito");
@@ -164,6 +164,7 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
             catch (Exception ex)
             {
                 response.MessageError(ex.Message);
+                response.Data = entity;
             }
             return response;
         }

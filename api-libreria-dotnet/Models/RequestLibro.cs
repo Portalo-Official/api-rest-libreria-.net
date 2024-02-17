@@ -18,6 +18,7 @@ namespace pruebaSantiAPI_REST.Models
         public string Formato { get; set; }
         
         public int Cantidad { get; set; }
+        public string URL { get; internal set; }
 
         public RequestLibro() { }
 
