@@ -90,8 +90,8 @@ namespace pruebaSantiAPI_REST.Controllers
         }
 
         [HttpDelete]
-        [Route("tema-controller")]
-        public Response deleteTema(Request request)
+        [Route("tema-controller/id/{id}")]
+        public Response deleteTema([FromUri] Request request)
         {
             return temaDAO.delete(request.Id);
         }

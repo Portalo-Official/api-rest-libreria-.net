@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace pruebaSantiAPI_REST
 {
@@ -11,7 +12,8 @@ namespace pruebaSantiAPI_REST
         {
             // Configuración y servicios de Web API
             // CORS para poder conectar cualquier Frontend
-            config.EnableCors();
+            var cors = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(cors);
             // Rutas de Web API
             config.MapHttpAttributeRoutes();
 

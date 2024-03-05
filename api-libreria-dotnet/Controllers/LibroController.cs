@@ -15,7 +15,7 @@ using System.Web.Http.Cors;
 
 namespace pruebaSantiAPI_REST.Controllers
 {
-    [EnableCors(origins:"*", headers:"*", methods:"*")]
+    //[EnableCors(origins:"*", headers:"*", methods:"*")]
     [RoutePrefix("api/libro")]
     public class LibroController : ApiController
     {
@@ -41,9 +41,9 @@ namespace pruebaSantiAPI_REST.Controllers
 
         [HttpGet]
         [Route("libro-controller/isbn/{isbn}")]
-        public Response getLibroByISBN(RequestLibro request)
+        public Response getLibroByISBN([FromUri] string isbn)
         {
-            return libroDao.read(request.ISBN);
+            return libroDao.read(isbn);
         }
 
         [HttpPut]

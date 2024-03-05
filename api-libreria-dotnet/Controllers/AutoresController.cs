@@ -9,10 +9,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace pruebaSantiAPI_REST.Controllers
 {
     [RoutePrefix("api/autor")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AutoresController : ApiController
     {
         private IAutorDAO autoresDAO;

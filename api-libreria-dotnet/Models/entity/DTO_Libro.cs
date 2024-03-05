@@ -20,6 +20,10 @@ namespace pruebaSantiAPI_REST.Models.DTO
         public string URL { get; set; }
         public DTO_Libro() { }
 
-
+        public override string ToString()
+        {
+            return "ISBN: "+this.ISBN+"; Titulo: "+this.Titulo+"; Precio: "+this.Precio+
+                "; Tema:"+this.Tema+"; Autor: "+this.Autor;
+        }
     }
 }

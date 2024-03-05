@@ -42,9 +42,8 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
                     command.Parameters.AddWithValue("@p_formato", entity.Formato);
                     command.Parameters.AddWithValue("@p_stock", entity.Cantidad.ToString());
                     if (entity.URL == null || entity.URL == "")
-                        command.Parameters.AddWithValue("@p_url", urlByDefecto);
-                    else
-                        command.Parameters.AddWithValue("@p_url", entity.URL);
+                        entity.URL = urlByDefecto;
+                    command.Parameters.AddWithValue("@p_url", entity.URL);
 
                     //query = @"call createLibro(@p_isbn, @p_titulo,@p_precio,@p_autor, @p_edicion, @p_tema, @p_formato, @p_stock)";
                     //query = query.Replace("@p_isbn", entity.ISBN);
@@ -63,8 +62,8 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
             }
             catch (Exception ex)
             {
-                response.MessageError(ex.Message);
-                //response.MessageError(query);
+                //response.MessageError(ex.Message);
+                response.MessageError(entity.ToString());
             }
             return response;
         }
@@ -75,6 +74,7 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
 
             try
             {
+                if (this.read(id_entity).Data == null) throw new Exception("Libro no existe");
                 MySqlCommand ejecucion = this.connection.CreateCommand();
                 string query = @"call deleteLibro(@p_isbn)";
                 query = query.Replace("@p_isbn", id_entity);
@@ -82,8 +82,12 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
                 ejecucion.CommandText = query;
                 ejecucion.ExecuteNonQuery();
                 response.MessageSuccess("Libro "+id_entity+" eliminado con exito");
+
+                response.Data = true;
+
             }catch(Exception ex)
             {
+                response.Data = false;
                 response.MessageError(ex.Message);
             }
             return response;
@@ -120,10 +124,16 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
                 command.Parameters.AddWithValue("@p_isbn", id_entity);
 
                 MySqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
+                try
                 {
-                    response.Data = new LibroMapper().MapToDto(reader);
+                    while (reader.Read())
+                    {
+                        response.Data = new LibroMapper().MapToDto(reader);
+                    }
+                }
+                catch
+                {
+                    reader.Close();
                 }
                 // Cerrar reader
                 reader.Close();
@@ -145,7 +155,13 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
                
                 using (MySqlCommand command = new MySqlCommand("updateLibro", connection))
                 {
-
+                    Response libroISBN = read(entity.ISBN);
+                   if (libroISBN.Data == null)
+                    {
+                        response.Data = null;
+                        response.MessageError("No existe el libro");
+                        return response;
+                    }
                     command.CommandType = System.Data.CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@p_isbn", entity.ISBN);
                     command.Parameters.AddWithValue("@p_titulo", entity.Titulo);
@@ -158,7 +174,7 @@ namespace pruebaSantiAPI_REST.SQL.DAO.DAOMySQL
                     command.ExecuteNonQuery();
 
                     response.MessageSuccess("Actualizado con exito");
-                    response.Data = entity;
+                    response.Data = libroISBN.Data;
                 }
             }
             catch (Exception ex)

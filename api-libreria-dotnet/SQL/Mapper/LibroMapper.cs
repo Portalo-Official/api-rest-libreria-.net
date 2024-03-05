@@ -5,6 +5,7 @@ using pruebaSantiAPI_REST.Models.entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Web;
 
 namespace pruebaSantiAPI_REST.SQL.Mapper
@@ -32,6 +33,8 @@ namespace pruebaSantiAPI_REST.SQL.Mapper
 
         public static DTO_Libro MapFromRequest(RequestLibro request)
         {
+            // Es una guarreria que hice, por si por otro lado insertan en la BBDD, me aseguro que no me de null.
+            string urlByDefecto = "https://i.ibb.co/mz6F1Kp/167219770-127523866011194-8434310988880472619-n.jpg";
             return new DTO_Libro
             {
                 Id = request.Id,
@@ -43,7 +46,7 @@ namespace pruebaSantiAPI_REST.SQL.Mapper
                 Formato = request.Formato,
                 Precio = request.Precio,
                 Cantidad = request.Cantidad,
-                URL = request.URL
+                URL = (request.URL != null && request.URL != "") ? request.URL : urlByDefecto,
             };
         }
     }
